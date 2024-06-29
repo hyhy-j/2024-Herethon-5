@@ -1,0 +1,5 @@
+{% extends 'frontend/phone.html' %} {% load static %} {% block title %} : 검색{% endblock %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/search.css' %}" />
+{% endblock %} {% block content %}
+<div class="search">검색페이지</div>
+{% endblock %} {% block nav %} {% include './nav/nav_search.html' %} {% endblock %}

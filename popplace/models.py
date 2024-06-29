@@ -1,10 +1,13 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
-
 class User(AbstractUser):
+    # age = models.IntegerField(null=True, blank=True)
+    # gender = models.CharField(max_length=10, null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=10, null=True, blank=True)
+    groups = models.ManyToManyField(Group, related_name='popplace_user_set', blank=True)
+    user_permissions = models.ManyToManyField(Permission, related_name='popplace_user_set', blank=True)
 
 class Column(models.Model):
         title = models.CharField(max_length=200)
@@ -56,6 +59,7 @@ class Popup:
 
 class Reservation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reservations')
-    popup = models.ForeignKey(Popup, on_delete=models.CASCADE)
+    # popup = models.ForeignKey(Popup, on_delete=models.CASCADE)
+    popup_store = models.ForeignKey(PopupStore, on_delete=models.CASCADE, related_name='reservations')
     reservation_date = models.DateTimeField(auto_now_add=True)
 

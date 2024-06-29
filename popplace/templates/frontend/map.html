@@ -1,0 +1,5 @@
+{% extends 'frontend/phone.html' %} {% load static %} {% block title %} : 지도{% endblock %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/map.css' %}" />
+{% endblock %} {% block content %}
+<div class="map">지도페이지</div>
+{% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% endblock %}
