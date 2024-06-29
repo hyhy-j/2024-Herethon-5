@@ -33,3 +33,6 @@ def popupstore(request):
 
 def popupreserv(request):
     return render(request, 'frontend/popupreserv.html')
+
+def popupreview(request):
+    return render(request, 'frontend/popupreview.html')

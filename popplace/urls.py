@@ -15,4 +15,5 @@ urlpatterns = [
   path('signup/done', views.signdone, name='signdone'),
   path('popupstore/', views.popupstore, name='popupstore'),
   path('popupstore/reservation', views.popupreserv, name='popupreserv'),
+  path('popupstore/review', views.popupreview, name='popupreview'),
 ]
