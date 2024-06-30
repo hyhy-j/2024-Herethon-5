@@ -3,3 +3,28 @@
 {% endblock %} {% block content %}
 <div class="search">검색페이지</div>
 {% endblock %} {% block nav %} {% include './nav/nav_search.html' %} {% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Popup Store 검색 결과</title>
+</head>
+<body>
+    <h1>Popup Store 검색 결과</h1>
+
+    <form method="GET">
+        {{ form.as_p }}
+        <button type="submit">검색</button>
+    </form>
+
+    {% if results %}
+        <ul>
+            {% for popupstore in results %}
+                <li>{{ popupstore.name }} - {{ popupstore.address }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>검색 결과가 없습니다.</p>
+    {% endif %}
+</body>
+</html>
