@@ -27,6 +27,8 @@ class PopupStore(models.Model):
     address = models.CharField(max_length=255)
     image = models.ImageField(upload_to='popup_images/')
     description = models.TextField()
+    latitude = models.FloatField()  # 위도 필드
+    longitude = models.FloatField()  # 경도 필드
 
     def __str__(self):
         return self.name

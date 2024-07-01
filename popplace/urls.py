@@ -13,8 +13,10 @@ urlpatterns = [
   path('login/', views.login, name='login'),
   path('signup/', views.signup, name='signup'),
   path('signup/done', views.signdone, name='signdone'),
-  path('popupstore/', views.popupstore, name='popupstore'),
-  path('popupstore/reservation', views.popupreserv, name='popupreserv'),
-  path('popupstore/review', views.popupreview, name='popupreview'),
+  path('popupstore/', views.popupstore, name='popupstores'),
+  path('popupstore/<int:popup_id>/', views.popupstore, name='popupstore'),
+  path('popupstore/<int:popup_id>/reservation', views.popupreserv, name='popupreserv'),
+  path('popupstore/<int:popup_id>/reserved',views.popupreserved, name='popupreserved'),
+  path('popupstore/<int:popup_id>/review', views.popupreview, name='popupreview'),
   
 ]
