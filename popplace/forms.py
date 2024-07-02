@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Review, Favorite, Stamp
+from .models import User, Review, Favorite, Stamp, Reservation
 
 class SignUpForm(forms.ModelForm):
     class Meta:
@@ -23,3 +23,9 @@ class StampForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     query = forms.CharField(label='검색', max_length=100)
+
+    
+class ReservationForm(forms.ModelForm):
+    class Meta:
+        model = Reservation
+        fields = ['date','time']

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
 from .models import PopupStore, Review
-from .forms import ReviewForm, SearchForm
+from .forms import ReviewForm, SearchForm, ReservationForm
 
 # Create your views here.
 def splash(request):
@@ -46,9 +46,9 @@ def map(request):
     ]
     return JsonResponse(data, safe=False)
 
-# def magazine(request, magazine_id):
-#     magazine= get_object_or_404(PopupStore,pk=magazine_id)
-#     return render(request, 'frontend/magazine.html',{'magazine':magazine})
+def magazine(request, magazine_id):
+    magazine= get_object_or_404(PopupStore,pk=magazine_id)
+    return render(request, 'frontend/magazine.html',{'magazine':magazine})
 
 def magazine(request):
     return render(request, 'frontend/magazine.html')
@@ -84,9 +84,21 @@ def popupstore(request, popup_id):
 # @login_required
 def popupreserv(request,popup_id):
     popup = get_object_or_404(PopupStore, id=popup_id)
-    if request.method=='POST':
-        return redirect('popplace:popupreserved', popup_id=popup_id)
-    context={'popup':popup,}
+    
+    if request.method == 'POST':
+        form = ReservationForm(request.POST)
+        if form.is_valid():
+            reservation = form.save(commit=False)
+            reservation.popup_store = popup  # assuming Reservation model has a ForeignKey to PopupStore
+            reservation.save()
+            return redirect('popplace:popupreserved', popup_id=popup_id)
+    else:
+        form = ReservationForm()
+    
+    context = {
+        'popup': popup,
+        'form': form,
+    }
     return render(request, 'frontend/popupreserv.html', context)
 
 def popupreserved(request,popup_id):
@@ -95,6 +107,7 @@ def popupreserved(request,popup_id):
     return render(request, 'frontend/popupreserved.html', context)
 
 def popupreview(request, popup_id):
+
     popup = get_object_or_404(PopupStore, id=popup_id)
     reviews = Review.objects.filter(popup_store=popup)
 
@@ -103,9 +116,9 @@ def popupreview(request, popup_id):
         if form.is_valid():
             review = form.save(commit=False)
             review.popup_store = popup
-            review.user = request.user
+            # review.user = request.user
             review.save()
-            return redirect('popupstore', popup_id=popup_id)
+            return redirect('popplace:popupstore', popup_id=popup_id)
     else:
         form = ReviewForm()
 
@@ -116,3 +129,15 @@ def popupreview(request, popup_id):
     }
     return render(request, 'frontend/popupreview.html', context)
 
+def category(request):
+    category = request.GET.get('category')  # URL에서 카테고리 파라미터 받아오기
+    popup_stores = PopupStore.objects.all()
+
+    if category:
+        popup_stores = popup_stores.filter(category=category)
+
+    context = {
+        'popup_stores': popup_stores,
+        'selected_category': category,  # 선택된 카테고리를 템플릿에 전달
+    }
+    return render(request, 'category.html', context)

@@ -10,7 +10,7 @@
 <p>{{ popupstore.location }}</p>
 <p>{{ popupstore.description }}</p>
 
-<form action="{% url 'popplace:popupstore' popup.id %}" method="post">
+<form action="{% url 'popplace:popupreserv' popup.id %}" method="post">
     {% csrf_token %}
     <!-- 예약 관련 폼 -->
     <input type="submit" value="예약하기">

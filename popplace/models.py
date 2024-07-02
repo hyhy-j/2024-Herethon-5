@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
+from django.utils import timezone
 
 class User(AbstractUser):
     # age = models.IntegerField(null=True, blank=True)
@@ -36,7 +37,7 @@ class PopupStore(models.Model):
 
 class Review(models.Model):
     popup_store = models.ForeignKey(PopupStore, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='review_images/', null=True, blank=True)
     video = models.FileField(upload_to='review_videos/', null=True, blank=True)
@@ -60,8 +61,8 @@ class Popup:
     pass
 
 class Reservation(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reservations')
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reservations')
     # popup = models.ForeignKey(Popup, on_delete=models.CASCADE)
     popup_store = models.ForeignKey(PopupStore, on_delete=models.CASCADE, related_name='reservations')
-    reservation_date = models.DateTimeField(auto_now_add=True)
-
+    date = models.DateField()
+    time = models.TimeField()

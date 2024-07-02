@@ -23,7 +23,7 @@
     </ul>
 
     <h2>리뷰 작성하기</h2>
-    <form method="post" enctype="multipart/form-data">
+    <form action="{% url 'popplace:popupreview' popup.id %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">리뷰 작성</button>
