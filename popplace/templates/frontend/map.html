@@ -15,28 +15,28 @@
 
 {% block content %}
     <div class="map">
-        {% include './searchBar.html' %}
+        <form method="GET" action="{% url 'popplace:map' %}">
+            <input type="text" name="query" placeholder="검색어를 입력하세요" value="{{ query }}">
+            <label for="category">카테고리:</label>
+            <select id="category" name="category">
+                <option value="">전체</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category.id|stringformat:"s" == selected_category %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="location">지역:</label>
+            <select id="location" name="location">
+                <option value="">전체</option>
+                {% for location in locations %}
+                    <option value="{{ location.id }}" {% if location.id|stringformat:"s" == selected_location %}selected{% endif %}>{{ location.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="date">날짜:</label>
+            <input type="date" id="date" name="date" value="{{ selected_date }}">
+            <button type="submit">검색</button>
+            <button type="button" onclick="resetFilters()">전체 보기</button>
+        </form>
         <div id="mapwrap">
-            <div id="category-selector">
-                <label for="category1">카테고리:</label>
-                <select id="category1">
-                    <option value="">전체</option>
-                    {% for category in categories %}
-                        <option value="{{ category.id }}">{{ category.name }}</option>
-                    {% endfor %}
-                </select>
-                <label for="location">지역:</label>
-                <select id="location">
-                    <option value="">전체</option>
-                    {% for location in locations %}
-                        <option value="{{ location.id }}">{{ location.name }}</option>
-                    {% endfor %}
-                </select>
-                <label for="date">날짜:</label>
-                <input type="date" id="date">
-                <button onclick="applyFilters()">적용</button>
-                <button onclick="resetFilters()">전체 보기</button>
-            </div>
             <div id="map"></div>
         </div>
     </div>
@@ -59,16 +59,15 @@
                     name: "{{ store.name }}",
                     latitude: {{ store.latitude }},
                     longitude: {{ store.longitude }},
-                    location: "{{ store.location.id }}", // 지역의 ID 사용
-                    category: "{{ store.category.id }}",  // 카테고리의 ID 사용
-                    start_date: "{{ store.start_date }}", // 시작 날짜
-                    end_date: "{{ store.end_date }}"      // 종료 날짜
+                    category_name: "{{ store.category_name }}",  // 카테고리 이름
+                    location_name: "{{ store.location_name }}",  // 지역 이름
+                    start_date: "{{ store.start_date }}",
+                    end_date: "{{ store.end_date }}"
                 },
             {% endfor %}
         ];
 
         document.addEventListener("DOMContentLoaded", function() {
-            // Kakao 지도 API 스크립트 비동기 로드
             var script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = '//dapi.kakao.com/v2/maps/sdk.js?appkey=536649895a2fca9bfd027f79ac41c3aa&libraries=services&autoload=false';
@@ -80,25 +79,18 @@
             document.head.appendChild(script);
         });
 
-        // 초기화 및 지도 생성 함수
         function initMap() {
             var container = document.getElementById('map');
             var options = {
-                center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울 시청 좌표
-                level: 5 // 지도 확대 레벨
+                center: new kakao.maps.LatLng(37.5665, 126.9780),
+                level: 5
             };
             map = new kakao.maps.Map(container, options);
-
-            // 첫 번째로 마커들을 모두 표시
             addMarkers(stores);
         }
 
-        // 마커를 추가하고 지도에 표시하는 함수
         function addMarkers(filteredStores) {
-            // 기존 마커들과 오버레이 제거
             clearMarkers();
-
-            // 필터된 스토어들에 대해 마커 생성
             filteredStores.forEach(function(store) {
                 var markerPosition = new kakao.maps.LatLng(store.latitude, store.longitude);
                 var marker = new kakao.maps.Marker({
@@ -107,30 +99,21 @@
                 marker.setMap(map);
                 markers.push(marker);
 
-                // 커스텀 오버레이 생성
-                var overlayContent =
-                    '<div class="customoverlay">' +
-                    '  <a href="https://map.kakao.com/link/map/' +
-                    store.name +
-                    "," +
-                    store.latitude +
-                    "," +
-                    store.longitude +
-                    '" target="_blank">' +
-                    '    <span class="title">' +
-                    store.name +
-                    "</span>" +
+                var overlayContent = '<div class="customoverlay">' +
+                    '  <a href="https://map.kakao.com/link/map/' + store.name + "," + store.latitude + "," + store.longitude + '" target="_blank">' +
+                    '    <span class="title">' + store.name + "</span>" +
                     "  </a>" +
+                    "  <br>카테고리: " + store.category_name +
+                    "  <br>위치: " + store.location_name +
                     "</div>";
                 var overlay = new kakao.maps.CustomOverlay({
                     position: markerPosition,
                     content: overlayContent,
                     yAnchor: 1,
-                    map: map // 초기에는 지도에 추가
+                    map: map
                 });
                 overlays.push(overlay);
 
-                // 마커에 클릭 이벤트 추가
                 kakao.maps.event.addListener(marker, 'click', function() {
                     hideOverlays();
                     overlay.setMap(map);
@@ -138,7 +121,6 @@
             });
         }
 
-        // 마커와 오버레이를 모두 제거하는 함수
         function clearMarkers() {
             markers.forEach(function(marker) {
                 marker.setMap(null);
@@ -150,63 +132,14 @@
             overlays = [];
         }
 
-        // 오버레이 숨기는 함수
         function hideOverlays() {
             overlays.forEach(function(overlay) {
                 overlay.setMap(null);
             });
         }
 
-        // 필터 적용 버튼 클릭 시 호출되는 함수
-        function applyFilters() {
-            var categoryId = document.getElementById('category1').value;
-            var locationId = document.getElementById('location').value;
-            var selectedDate = document.getElementById('date').value;
-
-            var filteredStores = stores;
-
-            // 카테고리 필터링
-            if (categoryId) {
-                filteredStores = filteredStores.filter(function(store) {
-                    return store.category == categoryId;
-                });
-            }
-
-            // 지역 필터링
-            if (locationId) {
-                filteredStores = filteredStores.filter(function(store) {
-                    return store.location == locationId;
-                });
-            }
-
-            // 날짜 필터링
-            if (selectedDate) {
-                filteredStores = filteredStores.filter(function(store) {
-                    return isStoreOpenOnDate(store, selectedDate);
-                });
-            }
-
-            // 필터링된 마커들 표시
-            addMarkers(filteredStores);
-        }
-
-        // 날짜 비교 함수
-        function isDateInRange(startDate, endDate, targetDate) {
-            return startDate <= targetDate && targetDate <= endDate;
-        }
-
-        // 주어진 스토어가 주어진 날짜에 영업 중인지 확인하는 함수
-        function isStoreOpenOnDate(store, selectedDate) {
-            var startDate = new Date(store.start_date);
-            var endDate = new Date(store.end_date);
-            var targetDate = new Date(selectedDate);
-            
-            return isDateInRange(startDate, endDate, targetDate);
-        }
-
-        // "전체 보기" 버튼 클릭 시 모든 마커 표시
         function resetFilters() {
-            addMarkers(stores);
+            window.location.href = "{% url 'popplace:map' %}";
         }
     </script>
 {% endblock %}

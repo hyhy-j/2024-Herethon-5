@@ -30,19 +30,102 @@ def search(request):
     }
     return render(request, 'frontend/search.html', context)
 
+# def map(request):
+#     stores = PopupStore.objects.all()
+#     categories= Category.objects.all()
+#     locations = Location.objects.all()
+
+
+#     context = {
+#         'stores': stores,
+#         'categories':categories,
+#         'locations': locations,
+#     }
+#     return render(request, 'frontend/map.html', context)
+
+# def map(request):
+#     query = request.GET.get('query', '')
+#     category_name = request.GET.get('category', '')
+#     location_name = request.GET.get('location', '')
+#     date = request.GET.get('date', '')
+
+#     stores = PopupStore.objects.all()
+#     categories = Category.objects.all()
+#     locations = Location.objects.all()
+
+#     if query:
+#         stores = stores.filter(Q(name__icontains=query) | Q(description__icontains=query))
+
+#     if category_name:
+#         stores = stores.filter(category__name=category_name)
+
+#     if location_name:
+#         stores = stores.filter(location__name=location_name)
+
+#     if date:
+#         stores = stores.filter(start_date__lte=date, end_date__gte=date)
+
+#     context = {
+#         'stores': stores,
+#         'categories': categories,
+#         'locations': locations,
+#         'query': query,
+#         'selected_category': category_name,
+#         'selected_location': location_name,
+#         'selected_date': date,
+#     }
+#     return render(request, 'frontend/map.html', context)
+from django.shortcuts import render
+from django.db.models import Q
+from .models import PopupStore, Category, Location
+
 def map(request):
+    query = request.GET.get('query', '')
+    category_id = request.GET.get('category', '')
+    location_id = request.GET.get('location', '')
+    date = request.GET.get('date', '')
+
     stores = PopupStore.objects.all()
-    categories= Category.objects.all()
+    categories = Category.objects.all()
     locations = Location.objects.all()
 
+    if query:
+        stores = stores.filter(Q(name__icontains=query) | Q(description__icontains=query))
+
+    if category_id:
+        stores = stores.filter(category__id=category_id)
+
+    if location_id:
+        stores = stores.filter(location__id=location_id)
+
+    if date:
+        stores = stores.filter(start_date__lte=date, end_date__gte=date)
+
+    # 카테고리와 위치 이름을 포함하도록 수정
+    store_list = []
+    for store in stores:
+        store_list.append({
+            'id': store.id,
+            'name': store.name,
+            'latitude': store.latitude,
+            'longitude': store.longitude,
+            'category_name': store.category.name if store.category else '',
+            'location_name': store.location.name if store.location else '',
+            'start_date': store.start_date,
+            'end_date': store.end_date
+        })
 
     context = {
-        'stores': stores,
-        'categories':categories,
+        'stores': store_list,
+        'categories': categories,
         'locations': locations,
+        'query': query,
+        'selected_category': category_id,
+        'selected_location': location_id,
+        'selected_date': date,
     }
     return render(request, 'frontend/map.html', context)
-    # return render(request, 'frontend/map.html',{'stores':stores})
+
 
 def magazine(request, magazine_id):
     magazine= get_object_or_404(PopupStore,pk=magazine_id)

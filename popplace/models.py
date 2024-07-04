@@ -43,7 +43,7 @@ class PopupStore(models.Model):
     latitude = models.FloatField()  # 위도 필드
     longitude = models.FloatField()  # 경도 필드
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
-    categorie = models.ForeignKey(Category, on_delete=models.CASCADE, null =True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null =True)
     
 
     def __str__(self):
