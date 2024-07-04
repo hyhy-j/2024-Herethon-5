@@ -17,8 +17,23 @@
     <div class="map">
         {% include './searchBar.html' %}
         <div id="mapwrap">
+            <div id="category-selector">
+                <label for="category2">지역:</label>
+                <select id="category2">
+                    <option value="">전체</option>
+                    {% for location in locations %}
+                        <option value="{{ location.id }}">{{ location.name }}</option>
+                    {% endfor %}
+                </select>
+                <label for="category1">카테고리:</label>
+                <select id="category1">
+                    <option value="">전체</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <div id="map"></div>
-            <!-- 카테고리 섹션은 임시로 제거 -->
         </div>
     </div>
 {% endblock %}
@@ -30,72 +45,12 @@
 {% block js %}
     <!-- Kakao 지도 API 비동기로드 -->
     <script type="text/javascript">
-        function initMap() {
-            var container = document.getElementById('map');
-            var options = {
-                center: new kakao.maps.LatLng(37.5665, 126.9780), // 지도의 중심 좌표 설정
-                level: 5 // 지도의 확대 레벨 설정
-            };
-            var map = new kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
+        document.addEventListener("DOMContentLoaded", function() {
+            var map;
+            var markers = [];
+            var overlays = [];
 
-            // Django 템플릿에서 직접 데이터를 JavaScript 변수로 넣기
-            var stores = [
-                {% for store in stores %}
-                    {
-                        id: {{ store.id }},
-                        name: "{{ store.name }}",
-                        latitude: {{ store.latitude }},
-                        longitude: {{ store.longitude }}
-                    },
-                {% endfor %}
-            ];
-
-            console.log(stores); // 데이터가 제대로 반영되었는지 콘솔에서 확인
-
-            // 마커 데이터 가져오기
-            stores.forEach(store => {
-                var markerPosition = new kakao.maps.LatLng(store.latitude, store.longitude); 
-                var marker = new kakao.maps.Marker({
-                    position: markerPosition
-                });
-                marker.setMap(map);
-
-                // 커스텀 오버레이 생성
-                var overlayContent =
-                    '<div class="customoverlay">' +
-                    '  <a href="https://map.kakao.com/link/map/' +
-                    store.name +
-                    "," +
-                    store.latitude +
-                    "," +
-                    store.longitude +
-                    '" target="_blank">' +
-                    '    <span class="title">' +
-                    store.name +
-                    "</span>" +
-                    "  </a>" +
-                    "</div>";
-                var overlay = new kakao.maps.CustomOverlay({
-                    position: markerPosition,
-                    content: overlayContent,
-                    yAnchor: 1,
-                    map: map // 초기에는 지도에 추가
-                });
-
-                // 마커에 클릭 이벤트 추가
-                kakao.maps.event.addListener(marker, 'click', function() {
-                    overlay.setMap(map);
-                });
-            });
-
-            // 마커 카테고리 변경 함수
-            window.changeMarker = function(type) {
-                // 마커를 카테고리에 따라 필터링하는 로직 추가
-            };
-        }
-
-        // Kakao 지도 API 스크립트 비동기 로드
-        (function() {
+            // Kakao 지도 API 스크립트 비동기 로드
             var script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = '//dapi.kakao.com/v2/maps/sdk.js?appkey=536649895a2fca9bfd027f79ac41c3aa&libraries=services&autoload=false';
@@ -105,6 +60,132 @@
                 });
             };
             document.head.appendChild(script);
-        })();
+
+            // 초기화 및 지도 생성 함수
+            function initMap() {
+                var container = document.getElementById('map');
+                var options = {
+                    center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울 시청 좌표
+                    level: 5 // 지도 확대 레벨
+                };
+                map = new kakao.maps.Map(container, options);
+
+                // Django 템플릿에서 넘어온 팝업 스토어 데이터
+                var stores = [
+                    {% for store in stores %}
+                        {
+                            id: {{ store.id }},
+                            name: "{{ store.name }}",
+                            latitude: {{ store.latitude }},
+                            longitude: {{ store.longitude }},
+                            location: "{{ store.location.id }}", // 지역의 ID 사용
+                            category: "{{ store.category.id }}"  // 카테고리의 ID 사용
+                        },
+                    {% endfor %}
+                ];
+
+                console.log(stores); // 데이터가 제대로 반영되었는지 콘솔에서 확인
+
+                // 첫 번째로 마커들을 모두 표시
+                addMarkers(stores);
+
+                // 카테고리 선택 시 이벤트 처리
+                var categorySelect = document.getElementById('category1');
+                if (categorySelect) {
+                    categorySelect.addEventListener('change', function() {
+                        var selectedCategoryId = categorySelect.value;
+                        var selectedLocationId = document.getElementById('category2').value;
+
+                        // 필터링 조건 설정
+                        var filteredStores = stores.filter(function(store) {
+                            var categoryMatch = selectedCategoryId === '' || store.category === selectedCategoryId;
+                            var locationMatch = selectedLocationId === '' || store.location === selectedLocationId;
+                            return categoryMatch && locationMatch;
+                        });
+
+                        // 필터링된 마커들 표시
+                        addMarkers(filteredStores);
+                    });
+                }
+
+                // 지역 선택 시 이벤트 처리
+                var locationSelect = document.getElementById('category2');
+                if (locationSelect) {
+                    locationSelect.addEventListener('change', function() {
+                        var selectedLocationId = locationSelect.value;
+                        var selectedCategoryId = document.getElementById('category1').value;
+
+                        // 필터링 조건 설정
+                        var filteredStores = stores.filter(function(store) {
+                            var locationMatch = selectedLocationId === '' || store.location === selectedLocationId;
+                            var categoryMatch = selectedCategoryId === '' || store.category === selectedCategoryId;
+                            return locationMatch && categoryMatch;
+                        });
+
+                        // 필터링된 마커들 표시
+                        addMarkers(filteredStores);
+                    });
+                }
+            }
+
+            // 마커를 추가하고 지도에 표시하는 함수
+            function addMarkers(filteredStores) {
+                // 기존 마커들과 오버레이 제거
+                markers.forEach(function(marker) {
+                    marker.setMap(null);
+                });
+                overlays.forEach(function(overlay) {
+                    overlay.setMap(null);
+                });
+                markers = [];
+                overlays = [];
+
+                // 필터된 스토어들에 대해 마커 생성
+                filteredStores.forEach(function(store) {
+                    var markerPosition = new kakao.maps.LatLng(store.latitude, store.longitude);
+                    var marker = new kakao.maps.Marker({
+                        position: markerPosition
+                    });
+                    marker.setMap(map);
+                    markers.push(marker);
+
+                    // 커스텀 오버레이 생성
+                    var overlayContent =
+                        '<div class="customoverlay">' +
+                        '  <a href="https://map.kakao.com/link/map/' +
+                        store.name +
+                        "," +
+                        store.latitude +
+                        "," +
+                        store.longitude +
+                        '" target="_blank">' +
+                        '    <span class="title">' +
+                        store.name +
+                        "</span>" +
+                        "  </a>" +
+                        "</div>";
+                    var overlay = new kakao.maps.CustomOverlay({
+                        position: markerPosition,
+                        content: overlayContent,
+                        yAnchor: 1,
+                        map: map // 초기에는 지도에 추가
+                    });
+                    overlays.push(overlay);
+
+                    // 마커에 클릭 이벤트 추가
+                    kakao.maps.event.addListener(marker, 'click', function() {
+                        hideOverlays();
+                        overlay.setMap(map);
+                    });
+                });
+            }
+
+            // 오버레이 숨기는 함수
+            function hideOverlays() {
+                overlays.forEach(function(overlay) {
+                    overlay.setMap(null);
+                });
+            }
+        });
     </script>
 {% endblock %}

@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
-from .models import PopupStore, Review
+from .models import PopupStore, Review, Location, Category
 from .forms import ReviewForm, SearchForm, ReservationForm
 
 # Create your views here.
@@ -32,50 +32,15 @@ def search(request):
 
 def map(request):
     stores = PopupStore.objects.all()
-    return render(request, 'frontend/map.html',{'stores':stores})
-
-# def map(request):
-#     stores = PopupStore.objects.all()
-#     data = [
-#         {
-#             'id': store.id,
-#             'name': store.name,
-#             'latitude': store.latitude,
-#             'longitude': store.longitude,
-#         }
-#         for store in stores
-#     ]
-#     return JsonResponse(data, safe=False)
-
-
-# def map(request):
-#     return render(request, 'frontend/map.html')
-
-# def map(request):
-#     category = request.GET.get('category', 'all')
-#     location = request.GET.get('location', 'all')
-#     date = request.GET.get('date', 'all')
-
-#     stores = PopupStore.objects.all()
-
-#     if category != 'all':
-#         stores = stores.filter(category=category)
-#     if location != 'all':
-#         stores = stores.filter(location__icontains=location)
-#     if date != 'all':
-#         stores = stores.filter(date=date)
-
-#     store_data = list(stores.values('id', 'name', 'latitude', 'longitude'))
-
-#     return JsonResponse(store_data, safe=False)
-
-def map(request):
-    stores = PopupStore.objects.all()
-
-    return render(request, 'frontend/map.html', {'stores':stores})
-
-def map_view(request):
-    return render(request, 'frontend/map.html')
+    categories= Category.objects.all()
+    locations = Location.objects.all()
+    context = {
+        'stores': stores,
+        'categories':categories,
+        'locations': locations,
+    }
+    return render(request, 'frontend/map.html', context)
+    # return render(request, 'frontend/map.html',{'stores':stores})
 
 def magazine(request, magazine_id):
     magazine= get_object_or_404(PopupStore,pk=magazine_id)
