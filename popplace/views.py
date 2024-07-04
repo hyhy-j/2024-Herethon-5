@@ -31,20 +31,51 @@ def search(request):
     return render(request, 'frontend/search.html', context)
 
 def map(request):
-    query = request.GET.get('query', '')
-    popup_stores = PopupStore.objects.filter(
-        Q(name__icontains=query) | Q(description__icontains=query)
-    )
-    data = [
-        {
-            'id': popup_store.id,
-            'name': popup_store.name,
-            'latitude': popup_store.latitude,
-            'longitude': popup_store.longitude,
-        }
-        for popup_store in popup_stores
-    ]
-    return JsonResponse(data, safe=False)
+    stores = PopupStore.objects.all()
+    return render(request, 'frontend/map.html',{'stores':stores})
+
+# def map(request):
+#     stores = PopupStore.objects.all()
+#     data = [
+#         {
+#             'id': store.id,
+#             'name': store.name,
+#             'latitude': store.latitude,
+#             'longitude': store.longitude,
+#         }
+#         for store in stores
+#     ]
+#     return JsonResponse(data, safe=False)
+
+
+# def map(request):
+#     return render(request, 'frontend/map.html')
+
+# def map(request):
+#     category = request.GET.get('category', 'all')
+#     location = request.GET.get('location', 'all')
+#     date = request.GET.get('date', 'all')
+
+#     stores = PopupStore.objects.all()
+
+#     if category != 'all':
+#         stores = stores.filter(category=category)
+#     if location != 'all':
+#         stores = stores.filter(location__icontains=location)
+#     if date != 'all':
+#         stores = stores.filter(date=date)
+
+#     store_data = list(stores.values('id', 'name', 'latitude', 'longitude'))
+
+#     return JsonResponse(store_data, safe=False)
+
+def map(request):
+    stores = PopupStore.objects.all()
+
+    return render(request, 'frontend/map.html', {'stores':stores})
+
+def map_view(request):
+    return render(request, 'frontend/map.html')
 
 def magazine(request, magazine_id):
     magazine= get_object_or_404(PopupStore,pk=magazine_id)
@@ -140,4 +171,13 @@ def category(request):
         'popup_stores': popup_stores,
         'selected_category': category,  # 선택된 카테고리를 템플릿에 전달
     }
-    return render(request, 'category.html', context)
+    return render(request, 'frontend/category.html', context)
+
+
+
+# def category(request, category):
+#     # 작은 카테고리에 따라 해당하는 팝업들을 가져와 JSON 형태로 반환
+#     popups = PopupStore.objects.filter(category__iexact=category)  # 대소문자 구분 없이 필터링
+#     data = list(popups.values('name', 'description'))  # 필요한 필드만 JSON으로 변환
+    
+#     return JsonResponse(data, safe=False)

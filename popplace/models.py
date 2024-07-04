@@ -22,6 +22,16 @@ class Event(models.Model):
         end_date = models.DateTimeField()
         column = models.ForeignKey(Column, on_delete=models.CASCADE, related_name='events')
 
+class Location(models.Model):
+    name = models.CharField(max_length=50)
+    def __str__(self):
+        return self.name
+
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+    def __str__(self):
+        return self.name
+
 class PopupStore(models.Model):
     name = models.CharField(max_length=100)
     operating_period = models.CharField(max_length=100)
@@ -30,6 +40,8 @@ class PopupStore(models.Model):
     description = models.TextField()
     latitude = models.FloatField()  # 위도 필드
     longitude = models.FloatField()  # 경도 필드
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
+    categorie = models.ForeignKey(Category, on_delete=models.CASCADE, null =True)
 
     def __str__(self):
         return self.name
