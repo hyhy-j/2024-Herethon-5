@@ -71,6 +71,7 @@ def map(request):
             'address': store.address,
             'latitude': store.latitude,
             'longitude': store.longitude,
+            'image': store.image,
             'category_name': store.category.name if store.category else '',
             'location_name': store.location.name if store.location else '',
             'start_date': store.start_date,

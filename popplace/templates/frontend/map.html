@@ -26,6 +26,8 @@
               address: "{{ store.address }}",  // 지역 이름
               category_name: "{{ store.category_name }}",  // 카테고리 이름
               popupstore_url: "{% url 'popplace:popupstore' store.id %}",
+              start_date: "{{ store.start_date }}",
+              end_date: "{{ store.end_date }}",
           },
       {% endfor %}
   ];
@@ -105,13 +107,22 @@
 
           var content =
               '<div class="overlayInfo">' +
-              '  <a href="' + store.popupstore_url + '" target="_blank">' +
-              '  <div class="infoImage" >' +
-              '    <img src="' + store.image.url + '" alt="' + store.name + '">' +
-              '  </div>' +
-              '  <div class="infoText">' +
-              '    <p>위치: ' + store.address + '</p>' +
-              '  </div>' +
+              '  <a href="' + store.popupstore_url + '">' +
+              '    <div class="overlayTitle">팝업 스토어<div>' +
+              '    <div class="overlayPUTitle">' + store.name + '</div>' +
+              '    <div class="overlayPUContent">' +
+              '      <div class="infoImage" >' +
+              '        <img src="' + store.image + '" alt="' + store.name + '">' +
+              '      </div>' +
+              '      <div class="infoContent">' +
+              '        <div class="infoText">' +
+              '          <p>' + store.start_date + ' - ' + store.end_date + '</p>' +
+              '        </div>' +
+              '        <div class="infoAddress">' +
+              '          <p>' + store.address + '</p>' +
+              '        </div>' +
+              '      </div>' +
+              '    </div>' +
               '  </a>' +
               '</div>';
 
