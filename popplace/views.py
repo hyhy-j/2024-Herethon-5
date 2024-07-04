@@ -107,6 +107,7 @@ def map(request):
         store_list.append({
             'id': store.id,
             'name': store.name,
+            'address': store.address,
             'latitude': store.latitude,
             'longitude': store.longitude,
             'category_name': store.category.name if store.category else '',

@@ -10,7 +10,7 @@
             width: 100%;
             height: 400px;
         }
-    </style>
+        </style>
 {% endblock %}
 
 {% block content %}
@@ -34,7 +34,6 @@
             <label for="date">날짜:</label>
             <input type="date" id="date" name="date" value="{{ selected_date }}">
             <button type="submit">검색</button>
-            <button type="button" onclick="resetFilters()">전체 보기</button>
         </form>
         <div id="mapwrap">
             <div id="map"></div>
@@ -51,18 +50,19 @@
     <script type="text/javascript">
         var map;
         var markers = [];
-        var overlays = [];
+        var currentOverlay = null;  // 현재 표시된 오버레이를 저장할 변수
+
         var stores = [
             {% for store in stores %}
                 {
                     id: {{ store.id }},
                     name: "{{ store.name }}",
+                    image: "{{ store.image.url }}",  // 이미지 URL
+                    description: "{{ store.description|safe }}",  // 설명
                     latitude: {{ store.latitude }},
                     longitude: {{ store.longitude }},
-                    category_name: "{{ store.category_name }}",  // 카테고리 이름
-                    location_name: "{{ store.location_name }}",  // 지역 이름
-                    start_date: "{{ store.start_date }}",
-                    end_date: "{{ store.end_date }}"
+                    address: "{{ store.address }}",  // 지역 이름
+                    popupstore_url: "{% url 'popplace:popupstore' store.id %}",
                 },
             {% endfor %}
         ];
@@ -87,6 +87,11 @@
             };
             map = new kakao.maps.Map(container, options);
             addMarkers(stores);
+            
+            // 지도 클릭 시 현재 오버레이 숨기기
+            kakao.maps.event.addListener(map, 'click', function() {
+                hideCurrentOverlay();
+            });
         }
 
         function addMarkers(filteredStores) {
@@ -94,29 +99,38 @@
             filteredStores.forEach(function(store) {
                 var markerPosition = new kakao.maps.LatLng(store.latitude, store.longitude);
                 var marker = new kakao.maps.Marker({
-                    position: markerPosition
-                });
-                marker.setMap(map);
-                markers.push(marker);
-
-                var overlayContent = '<div class="customoverlay">' +
-                    '  <a href="https://map.kakao.com/link/map/' + store.name + "," + store.latitude + "," + store.longitude + '" target="_blank">' +
-                    '    <span class="title">' + store.name + "</span>" +
-                    "  </a>" +
-                    "  <br>카테고리: " + store.category_name +
-                    "  <br>위치: " + store.location_name +
-                    "</div>";
-                var overlay = new kakao.maps.CustomOverlay({
                     position: markerPosition,
-                    content: overlayContent,
-                    yAnchor: 1,
                     map: map
                 });
-                overlays.push(overlay);
+                markers.push(marker);
 
+                var content =
+                    '<div class="overlayInfo">' +
+                    '  <a href="' + store.popupstore_url + '" target="_blank">' +
+                    '  <div class="infoImage" >' +
+                    '    <img src="' + store.image + '" alt="' + store.name + '">' +
+                    '  </div>' +
+                    '  <div class="infoText">' +
+                    '    <p>위치: ' + store.address + '</p>' +
+                    '  </div>' +
+                    '  </a>' +
+                    '</div>';
+
+                var overlay = new kakao.maps.CustomOverlay({
+                    position: markerPosition,
+                    content: content,
+                    yAnchor: 1,
+                    map: null,  // 초기에는 지도에 추가하지 않음
+                    clickable: true  // 클릭 가능하도록 설정
+                });
+
+                // 마커를 클릭했을 때 오버레이 표시
                 kakao.maps.event.addListener(marker, 'click', function() {
-                    hideOverlays();
-                    overlay.setMap(map);
+                    if (currentOverlay) {
+                        currentOverlay.setMap(null);  // 현재 표시된 오버레이 숨기기
+                    }
+                    overlay.setMap(map);   // 새로운 오버레이 표시
+                    currentOverlay = overlay;  // 현재 표시된 오버레이 업데이트
                 });
             });
         }
@@ -126,20 +140,15 @@
                 marker.setMap(null);
             });
             markers = [];
-            overlays.forEach(function(overlay) {
-                overlay.setMap(null);
-            });
-            overlays = [];
+            currentOverlay = null;
         }
 
-        function hideOverlays() {
-            overlays.forEach(function(overlay) {
-                overlay.setMap(null);
-            });
+        function hideCurrentOverlay() {
+            if (currentOverlay) {
+                currentOverlay.setMap(null);
+                currentOverlay = null;
+            }
         }
 
-        function resetFilters() {
-            window.location.href = "{% url 'popplace:map' %}";
-        }
     </script>
 {% endblock %}
