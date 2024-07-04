@@ -1,0 +1,64 @@
+.modal_wrap {
+  border-radius: 40px 40px 0 0;
+  width: 100%;
+  height: 633px;
+  /*모달창 가운데 배치*/
+  position: absolute;
+  bottom: 83px;
+  left: 0;
+  display: none;
+  z-index: 2;
+  background-color: #fff;
+}
+.modal_wrap.show-modal {
+  display: block;
+}
+.modal_background.show-modal {
+  display: block;
+}
+.modal_background {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 83px);
+  background-color: rgba(0, 0, 0, 0.2);
+  bottom: 83px;
+  left: 0;
+  z-index: 1;
+  display: none;
+}
+
+.modalBtns {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+
+  position: absolute;
+  bottom: 4px;
+}
+
+.modalBack {
+  width: 118px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  background: #fff;
+
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.modalBtns input {
+  width: 265px;
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  background: #fff;
+
+  font-family: "Noto Sans KR";
+  font-size: 15px;
+  font-weight: 400;
+}

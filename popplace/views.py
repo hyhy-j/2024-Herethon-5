@@ -10,7 +10,12 @@ def splash(request):
     return render(request, 'frontend/splash.html')
 
 def main(request):
-    return render(request, 'frontend/main.html')
+    popup = PopupStore.objects.all()
+    context = {
+        'popups': popup,
+    }
+
+    return render(request, 'frontend/main.html', context)
 
 def search(request):
     popup = PopupStore.objects.all()

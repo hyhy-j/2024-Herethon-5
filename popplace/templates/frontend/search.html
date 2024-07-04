@@ -1,58 +1,42 @@
-{% extends 'frontend/phone.html' %}
-{% load static %}
-
-{% block title %}검색{% endblock %}
-
-{% block css %}
-    <link rel="stylesheet" href="{% static 'css/search.css' %}" />
-{% endblock %}
-
-{% block content %}
-    <div class="search">
-        <h1>검색 페이지</h1>
-    </div>
-    <div class="search-container">
-        <form action="{% url 'popplace:search' %}" method="GET">
-            {{ form.as_p }}
-            <button type="submit">검색</button>
-        </form>
-    </div>
-
-    {% if results %}
-        <div class="search-results">
-            <h2>검색 결과</h2>
-            <ul>
-                {% for popup in results %}
-                    <li>
-                        <a href="{% url 'popplace:popupstore' popup.id %}">
-                            <img src="{{ popup.image.url }}" alt="{{ popup.name }}" style="max-width: 100px; max-height: 100px;">
-                            {{ popup.name }} - {{ popup.address }}
-                        </a>
-                    </li>
-                {% empty %}
-                    <li>검색 결과가 없습니다.</li>
-                {% endfor %}
-            </ul>
+{% extends 'frontend/phone.html' %} {% load static %} {% block title %} : 검색{% endblock %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/search.css' %}" />
+{% endblock %} {% block content %}
+<div class="search">
+  {% include './searchBar/searchBar.html' %} {% if results %}
+  <div class="popupList">
+    {% for popup in results %}
+    <a href="{% url 'popplace:popupstore' popup.id %}">
+      <div class="popupBox">
+        <div class="popupImg">
+          <img src="{{ popup.image.url }}" alt="{{ popup.name }}" />
         </div>
-    {% else %}
-        <div class="search-results">
-            <p>팝업 스토어 목록</p>
-            <ul>
-                {% for popup in popups %}
-                    <li>
-                        <a href="{% url 'popplace:popupstore' popup.id %}">
-                            <img src="{{ popup.image.url }}" alt="{{ popup.name }}" style="max-width: 100px; max-height: 100px;">
-                            {{ popup.name }} - {{ popup.address }}
-                        </a>
-                    </li>
-                {% empty %}
-                    <li>팝업 스토어가 없습니다.</li>
-                {% endfor %}
-            </ul>
+        <div class="popupCategory">{{ popup.category }}</div>
+        <div class="popupName">{{ popup.name }}</div>
+        <div class="popupDate">{{ popup.start_date }} - {{ popup.end_date }}</div>
+        <div class="popupPlace">{{ popup.address }}</div>
+      </div>
+    </a>
+    {% empty %}
+    <div>팝업 스토어가 없습니다.</div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="popupList">
+    {% for popup in popups %}
+    <a href="{% url 'popplace:popupstore' popup.id %}">
+      <div class="popupBox">
+        <div class="popupImg">
+          <img src="{{ popup.image.url }}" alt="{{ popup.name }}" />
         </div>
-    {% endif %}
-{% endblock %}
-
-{% block nav %}
-    {% include './nav/nav_search.html' %}
-{% endblock %}
+        <div class="popupCategory">{{ popup.category }}</div>
+        <div class="popupName">{{ popup.name }}</div>
+        <div class="popupDate">{{ popup.start_date }} - {{ popup.end_date }}</div>
+        <div class="popupPlace">{{ popup.address }}</div>
+      </div>
+    </a>
+    {% empty %}
+    <div>팝업 스토어가 없습니다.</div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %} {% endblock %} {% block nav %} {% include './nav/nav_search.html' %} {% endblock %}
