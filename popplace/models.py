@@ -35,6 +35,8 @@ class Category(models.Model):
 class PopupStore(models.Model):
     name = models.CharField(max_length=100)
     operating_period = models.CharField(max_length=100)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
     address = models.CharField(max_length=255)
     image = models.ImageField(upload_to='popup_images/')
     description = models.TextField()

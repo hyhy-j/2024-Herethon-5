@@ -34,6 +34,8 @@ def map(request):
     stores = PopupStore.objects.all()
     categories= Category.objects.all()
     locations = Location.objects.all()
+
+
     context = {
         'stores': stores,
         'categories':categories,
