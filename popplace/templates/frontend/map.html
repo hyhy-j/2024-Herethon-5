@@ -24,6 +24,7 @@
               latitude: {{ store.latitude }},
               longitude: {{ store.longitude }},
               address: "{{ store.address }}",  // 지역 이름
+              category_name: "{{ store.category_name }}",  // 카테고리 이름
               popupstore_url: "{% url 'popplace:popupstore' store.id %}",
           },
       {% endfor %}
@@ -45,7 +46,7 @@
       var container = document.getElementById('map');
       var options = {
           center: new kakao.maps.LatLng(37.560869, 126.987516), // 지도의 중심좌표
-          level: 9, // 지도의 확대 레벨
+          level: 8, // 지도의 확대 레벨
       };
       map = new kakao.maps.Map(container, options);
       addMarkers(stores);
@@ -60,17 +61,53 @@
       clearMarkers();
       filteredStores.forEach(function(store) {
           var markerPosition = new kakao.maps.LatLng(store.latitude, store.longitude);
+
+          // 카테고리에 따른 마커 이미지 설정
+          var markerImageSrc;
+          switch (store.category_name) {
+              case 'K-pop':
+                  markerImageSrc = '{% static "img/kpop.png" %}';
+                  break;
+              case '소품':
+                  markerImageSrc = '{% static "img/props.png" %}';
+                  break;
+              case '캐릭터':
+                  markerImageSrc = '{% static "img/character.png" %}';
+                  break;
+              case '베이커리':
+                  markerImageSrc = '{% static "img/bakery.png" %}';
+                  break;
+              case '코스메틱':
+                  markerImageSrc = '{% static "img/cosmetic.png" %}';
+                  break;
+              case '음식':
+                  markerImageSrc = '{% static "img/food.png" %}';
+                  break;
+              case '패션':
+                  markerImageSrc = '{% static "img/fashion.png" %}';
+                  break;
+              // 다른 카테고리 추가
+              default:
+                  markerImageSrc = '{% static "img/perfume.png" %}';
+          }
+
+          var markerImageSize = new kakao.maps.Size(24, 35); // 마커 이미지 크기 설정
+          var markerImageOption = {offset: new kakao.maps.Point(12, 35)}; // 마커 이미지의 위치 설정
+          var markerImage = new kakao.maps.MarkerImage(markerImageSrc, markerImageSize, markerImageOption);
+
           var marker = new kakao.maps.Marker({
               position: markerPosition,
+              image: markerImage, // 마커 이미지 설정
               map: map
           });
+
           markers.push(marker);
 
           var content =
               '<div class="overlayInfo">' +
               '  <a href="' + store.popupstore_url + '" target="_blank">' +
               '  <div class="infoImage" >' +
-              '    <img src="' + store.image + '" alt="' + store.name + '">' +
+              '    <img src="' + store.image.url + '" alt="' + store.name + '">' +
               '  </div>' +
               '  <div class="infoText">' +
               '    <p>위치: ' + store.address + '</p>' +
