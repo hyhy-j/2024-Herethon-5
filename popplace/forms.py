@@ -22,10 +22,10 @@ class StampForm(forms.ModelForm):
         fields = ['code']
 
 class SearchForm(forms.Form):
-    query = forms.CharField(label='검색', max_length=100)
+    query = forms.CharField(required=False, label='검색', max_length=100)
 
     
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
-        fields = ['date','time']
+        fields = ['date','time','participant']

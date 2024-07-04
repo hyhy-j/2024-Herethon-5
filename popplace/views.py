@@ -13,71 +13,27 @@ def main(request):
     return render(request, 'frontend/main.html')
 
 def search(request):
+    popup_stores = PopupStore.objects.all()
+
     if request.method == 'GET':
         form = SearchForm(request.GET)
         if form.is_valid():
-            query = form.cleaned_data.get('query')  
+            query = form.cleaned_data.get('query')
             results = PopupStore.objects.filter(name__icontains=query)
         else:
             results = PopupStore.objects.none()
     else:
         form = SearchForm()
         results = PopupStore.objects.none()
-    
+
     context = {
         'form': form,
+        'popup_stores': popup_stores,
         'results': results,
     }
     return render(request, 'frontend/search.html', context)
 
-# def map(request):
-#     stores = PopupStore.objects.all()
-#     categories= Category.objects.all()
-#     locations = Location.objects.all()
 
-
-#     context = {
-#         'stores': stores,
-#         'categories':categories,
-#         'locations': locations,
-#     }
-#     return render(request, 'frontend/map.html', context)
-
-# def map(request):
-#     query = request.GET.get('query', '')
-#     category_name = request.GET.get('category', '')
-#     location_name = request.GET.get('location', '')
-#     date = request.GET.get('date', '')
-
-#     stores = PopupStore.objects.all()
-#     categories = Category.objects.all()
-#     locations = Location.objects.all()
-
-#     if query:
-#         stores = stores.filter(Q(name__icontains=query) | Q(description__icontains=query))
-
-#     if category_name:
-#         stores = stores.filter(category__name=category_name)
-
-#     if location_name:
-#         stores = stores.filter(location__name=location_name)
-
-#     if date:
-#         stores = stores.filter(start_date__lte=date, end_date__gte=date)
-
-#     context = {
-#         'stores': stores,
-#         'categories': categories,
-#         'locations': locations,
-#         'query': query,
-#         'selected_category': category_name,
-#         'selected_location': location_name,
-#         'selected_date': date,
-#     }
-#     return render(request, 'frontend/map.html', context)
-from django.shortcuts import render
-from django.db.models import Q
-from .models import PopupStore, Category, Location
 
 def map(request):
     query = request.GET.get('query', '')

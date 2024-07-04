@@ -80,3 +80,4 @@ class Reservation(models.Model):
     popup_store = models.ForeignKey(PopupStore, on_delete=models.CASCADE, related_name='reservations')
     date = models.DateField()
     time = models.TimeField()
+    participant = models.PositiveIntegerField()
