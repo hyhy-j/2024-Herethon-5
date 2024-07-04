@@ -6,6 +6,11 @@
 
 .popupImg {
   width: 100%;
+  margin-top: 5px;
+}
+
+.popupImg img {
+  border-radius: 10px;
 }
 
 .reservBtnUp {
