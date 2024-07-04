@@ -13,7 +13,7 @@ def main(request):
     return render(request, 'frontend/main.html')
 
 def search(request):
-    popup_stores = PopupStore.objects.all()
+    popup = PopupStore.objects.all()
 
     if request.method == 'GET':
         form = SearchForm(request.GET)
@@ -28,7 +28,7 @@ def search(request):
 
     context = {
         'form': form,
-        'popup_stores': popup_stores,
+        'popup_stores': popup,
         'results': results,
     }
     return render(request, 'frontend/search.html', context)
@@ -120,19 +120,19 @@ def popupstore(request, popup_id):
     return render(request, 'frontend/popupstore.html',context)
 
 # @login_required
-def popupreserv(request,popup_id):
+def popupreserv(request, popup_id):
     popup = get_object_or_404(PopupStore, id=popup_id)
-    
+
     if request.method == 'POST':
         form = ReservationForm(request.POST)
         if form.is_valid():
             reservation = form.save(commit=False)
-            reservation.popup_store = popup  # assuming Reservation model has a ForeignKey to PopupStore
+            reservation.popup_store = popup
             reservation.save()
-            return redirect('popplace:popupreserved', popup_id=popup_id)
+            return redirect('popplace:popupreserved', popup_id=popup_id)  # 예약 성공 페이지로 리다이렉트
     else:
         form = ReservationForm()
-    
+
     context = {
         'popup': popup,
         'form': form,

@@ -28,4 +28,16 @@ class SearchForm(forms.Form):
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
-        fields = ['date','time','participant']
+        fields = ['date', 'time','participant' ]
+
+        widgets = {
+            'date': forms.DateInput(attrs={'class': 'form-control ', 'type': 'date'}),
+            'time': forms.TimeInput(attrs={'class': 'form-control', 'type':'time','step': 1800})
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['time'].input_formats = ['%H:%M'] 
+    def clean_time(self):
+        time_value = self.cleaned_data['time']
+        # 필요에 따라 추가적인 시간 유효성 검사를 수행할 수 있음
+        return time_value

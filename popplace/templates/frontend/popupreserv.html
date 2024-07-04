@@ -1,10 +1,49 @@
-{% extends 'frontend/phone.html' %} {% load static %} {% block title %} : 팝업스토어 예약{% endblock %} {% block css %}
-<link rel="stylesheet" href="{% static 'css/popupreserv.css' %}" />
-{% endblock %} {% block content %}
-<div class="popupreserv">팝업 스토어 예약 페이지</div>
-<form action="{% url 'popplace:popupreserv' popup.id %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="예약하기">
-</form>
-{% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% endblock %}
+{% extends 'frontend/phone.html' %}
+{% load static %}
+
+{% block title %}예약하기{% endblock %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="popup-reservation">
+        <h2>{{ popup.name }} 예약하기</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <!-- JavaScript 초기화 -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var timeButtonsContainer = document.getElementById('time-buttons');
+                    var startTime = 0;  // 시작 시간 (0시부터 시작)
+                
+                    // 시간 버튼 생성 (30분 간격으로)
+                    for (var hour = startTime; hour <= 23; hour++) {
+                        for (var minute = 0; minute < 60; minute += 30) {
+                            var hourText = hour < 10 ? '0' + hour : hour;
+                            var minuteText = minute === 0 ? '00' : minute;
+                            var time = hourText + ':' + minuteText;
+                
+                            var button = document.createElement('button');
+                            button.textContent = time;
+                            button.className = 'time-btn';
+                            button.dataset.time = time;
+                            button.addEventListener('click', function() {
+                                var selectedTime = this.dataset.time;
+                                document.getElementById('selected-time').value = selectedTime;
+                                alert('선택된 시간: ' + selectedTime);
+                            });
+                
+                            timeButtonsContainer.appendChild(button);
+                        }
+                    }
+                });
+            </script>
+            <button><a href = "{% url 'popplace:popupstore' popup.id %}">취소</a></button>
+            <button type="submit" class="btn btn-primary">예약하기</button>
+        </form>
+    </div>
+{% endblock %}
