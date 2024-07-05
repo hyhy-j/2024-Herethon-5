@@ -7,10 +7,7 @@
     <img src="{{ popup.image.url }}" alt="{{ popup.name }}" />
   </div>
   <div class="reservBtnUp">
-    <form action="{% url 'popplace:popupreserv' popup.id %}" method="post">
-      {% csrf_token %}
-      <input id="modal_btn" class="reservBtn" type="submit" value="예약하기" />
-    </form>
+    <input id="modal_btn" class="reservBtn" type="submit" value="예약하기" />
   </div>
 
   <div class="popupContent">
@@ -75,14 +72,7 @@
 
   <div class="modal_background"></div>
   <div class="modal_wrap">
-    <div class="modal_content">
-      <form action="">
-        <div class="modalBtns">
-          <div id="modal_close" class="modalBack">취소</div>
-          <input type="submit" class="modal" value="예약 하기" />
-        </div>
-      </form>
-    </div>
+    <div class="modal_content">{% include './popupreserv.html' %}</div>
   </div>
 </div>
 {% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% block js %}
