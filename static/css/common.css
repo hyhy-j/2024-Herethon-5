@@ -21,6 +21,14 @@ p {
   font-family: "Noto Sans KR", "Apple SD Gothic Neo", "맑은 고딕", "돋움", sans-serif;
 }
 
+body {
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
 /* 모바일 사이트 세팅 */
 .page {
   background-color: rgb(188, 148, 255, 0.5);

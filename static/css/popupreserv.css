@@ -51,6 +51,14 @@
   font-weight: 400;
 }
 
+@media (hover: hover) {
+  .modal_wrap,
+  .modal_background {
+    width: 430px;
+    left: calc(50% - 215px);
+  }
+}
+
 .modalBtns input {
   width: 265px;
   height: 50px;
