@@ -18,5 +18,6 @@ urlpatterns = [
   path('popupstore/<int:popup_id>/reservation', views.popupreserv, name='popupreserv'),
   path('popupstore/<int:popup_id>/reserved',views.popupreserved, name='popupreserved'),
   path('popupstore/<int:popup_id>/review', views.popupreview, name='popupreview'),
+  path('save_favorite/<int:popup_id>/', views.save_favorite, name='save_favorite'),
   
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
