@@ -161,7 +161,8 @@
   accent-color: #9151f9;
 }
 
-.radio-rabel {
+.radio-rabel,
+.radio-label {
   font-size: 14px;
   font-weight: 400;
 }
