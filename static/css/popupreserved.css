@@ -1,5 +1,6 @@
 .popupreserved {
-  /* text-align: center; */
+  height: calc(100dvh - 83px);
+  overflow-y: scroll;
 }
 
 .reservedComment {
@@ -84,8 +85,7 @@
   font-size: 15px;
   font-weight: 500;
 
-  position: absolute;
-  bottom: 103px;
+  margin-top: 50px;
 }
 
 @media (hover: hover) {

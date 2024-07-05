@@ -1,6 +1,7 @@
 {% extends 'frontend/phone.html' %} {% load static %} {% block title %} : 메인{% endblock %} {% block css %}
 <link rel="stylesheet" href="{% static 'css/main.css' %}" />
 {% endblock %} {% block content %}
+<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
 <div class="main">
   <div class="popupSlider">
     <div class="carousel_main">
@@ -121,28 +122,12 @@
         <img src="{% static 'img/popPlace.png' %}" alt="로고" style="width: 88px" />
       </div>
       <div class="eventImgNText">
-        <lottie-player
-          src="https://lottiefiles.com/animations/magic-wand-6v4lsGrW1y"
-          background="transparent"
-          speed="1"
-          style="width: 68.208px; height: 56.349px"
-          loop
-          controls
-          autoplay
-        ></lottie-player>
+        <dotlottie-player src="https://lottie.host/4e5046aa-4900-4a2e-b914-6365aa1bf908/B9yIWCkF2F.json" background="transparent" speed="1" style="width: 68.208px; height: 56.349px; transform: rotate(17.083deg); margin-top: -20px;" loop autoplay></dotlottie-player>
         <div>
           <div style="color: var(--1, #9151f9); display: inline">팝플레이스</div>
           가입만 해도 <br />더현대 팝업 럭키드로우 제공?
         </div>
-        <lottie-player
-          src="https://lottiefiles.com/animations/magic-wand-6v4lsGrW1y"
-          background="transparent"
-          speed="1"
-          style="width: 30px; height: 30px; margin-right: 38.208px"
-          loop
-          controls
-          autoplay
-        ></lottie-player>
+        <dotlottie-player src="https://lottie.host/8e7169ba-14a3-4d20-b39c-1508c2123542/xr4kgMvtGh.json" background="transparent" speed="1" style="width: 30px; height: 30px; margin-right: 43px; padding-top: 10px; padding-left: 5px;" loop autoplay></dotlottie-player>
       </div>
     </div>
   </div>
@@ -185,6 +170,5 @@
     });
     showSlide(0);
   </script>
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   {% endblock %} {% endblock %}
 </div>
