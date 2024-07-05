@@ -1,7 +1,6 @@
 .mypage {
   width: 100vw;
   height: calc(100dvh - 83px);
-  padding: 20px;
   overflow-y: scroll;
 }
 
@@ -79,7 +78,8 @@
 
 .detail {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 20px;
   width: 100%;
   margin-top: 20px;
 }
@@ -89,15 +89,15 @@
   background-color: #c8a6ff;
   border: none;
   color: White;
-  border-radius: 30px;
+  border-radius: 10px;
   font-size: 16px;
   font-weight: bold;
-  width: 100%;
+  width: 171px;
   max-width: calc(50%-40px);
   box-sizing: border-box;
   padding: 13px 40px;
-  margin-left: 20px;
-  margin-right: 20px;
+  /* margin-left: 20px;
+  margin-right: 20px; */
   cursor: pointer;
 }
 
@@ -147,7 +147,7 @@
   width: 100%;
 }
 
-.modal form input[type="text"] {
+.modal form input[type="number"] {
   width: calc(100% - 40px);
   padding: 10px;
   margin-bottom: 20px;
@@ -199,7 +199,7 @@
   flex-direction: row;
   width: 100%;
   height: auto;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   margin-top: 30px;
 }
 
