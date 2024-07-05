@@ -58,13 +58,14 @@
       <div class="rvContent">
         <div class="rvPnS">
           <div class="rvP">김**</div>
-          <!-- <div class="rvS">⭐⭐⭐⭐⭐</div> -->
-          {% for i in "12345" %}
-          <div class="rvP">
-            {% if forloop.counter <= review.rate %}full{% elif forloop.counter == review.rate|stringformat:"i" %}half{%
-            endif %}">
+          <div class="rvSS">
+            {% for i in "12345" %}
+            <div class="rvS">
+              {% if forloop.counter <= review.rate %}⭐{% elif forloop.counter == review.rate|stringformat:"i"%}☆
+              {%endif%}
+            </div>
+            {% endfor %}
           </div>
-          {% endfor %}
         </div>
         <div class="rvText">{{ review.content }}</div>
       </div>
