@@ -40,24 +40,6 @@
     <input type="submit" class="submitBtn" value="등록하기" />
   </form>
 </div>
-<<<<<<< HEAD
-<script>
-function checkFormCompletion() {
-        var date = document.querySelector('input[name="date"]').value;
-        var submitButton = document.querySelector(".modal");
-
-        if (date) {
-          submitButton.classList.add("modal-active");
-        } else {
-          submitButton.classList.remove("modal-active");
-        }
-      }
-
-      document.querySelector('input[name="date"]').addEventListener("input", checkFormCompletion);
-    </script>
-{% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% endblock %}
-=======
-{% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% block js %}
 <script>
   function setImageFn(f) {
     var file = f.files;
@@ -78,6 +60,18 @@ function checkFormCompletion() {
       reader.readAsDataURL(file[0]);
     }
   }
-</script>
-{% endblock %} {% endblock %}
->>>>>>> 23513f3b7d674f26babd7838a62e97e38e4bad69
+function checkFormCompletion() {
+        var date = document.querySelector('input[name="date"]').value;
+        var submitButton = document.querySelector(".modal");
+
+        if (date) {
+          submitButton.classList.add("modal-active");
+        } else {
+          submitButton.classList.remove("modal-active");
+        }
+      }
+
+      document.querySelector('input[name="date"]').addEventListener("input", checkFormCompletion);
+    </script>
+{% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% endblock %}
+

@@ -132,7 +132,7 @@ def popupstore(request, popup_id):
         'average_rating': average_rating,
         'review_count': review_count, 
     }
-    return render(request, 'frontend/popupstore.html', {'popup': popup, 'popup_id': popup_id})
+    return render(request, 'frontend/popupstore.html', context)
 
 def add_favorite(request, popup_id):
     popup = get_object_or_404(PopupStore, id=popup_id)
@@ -178,12 +178,9 @@ def popupreserved(request, popup_id):
     else:
         reservation = None
 
-    popupl = PopupStore.objects.all()
-
     context = {
         'popup': popup,
         'reservation': reservation,
-        'popuplist': popupl,
     }
     return render(request, 'frontend/popupreserved.html', {'popup': popup, 'popup_id': popup_id})
 
@@ -220,7 +217,7 @@ def category(request):
         'popup_stores': popup_stores,
         'selected_category': category,  # 선택된 카테고리를 템플릿에 전달
     }
-    return render(request, 'frontend/category.html', context)
+    return render(request, 'frontend/category.html', )
 
 @login_required
 def save_favorite(request, popup_id):
