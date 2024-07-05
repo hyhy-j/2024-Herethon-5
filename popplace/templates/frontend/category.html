@@ -1,0 +1,42 @@
+{% extends 'frontend/phone.html' %}
+{% load static %}
+
+{% block title %}지도{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/map.css' %}" />
+{% endblock %}
+
+{% block content %}
+<form id="popupForm">
+    <!-- 큰 카테고리 선택 -->
+    <label for="mainCategory">Main Category:</label>
+    <select id="mainCategory" name="mainCategory">
+        <option value="tag">Tag</option>
+        <option value="location">Location</option>
+        <option value="date">Date</option>
+    </select>
+    
+    <!-- 작은 카테고리 선택 -->
+    <label for="subCategory">Sub Category:</label>
+    <select id="subCategory" name="subCategory">
+        <!-- 선택될 때마다 작은 카테고리 옵션들이 JavaScript를 통해 업데이트됩니다 -->
+    </select>
+    
+    <!-- 팝업 목록 표시 -->
+    <div id="popupList">
+        <!-- 선택된 작은 카테고리에 따라 여기에 팝업 목록이 동적으로 업데이트됩니다 -->
+    </div>
+</form>
+<div class="search-results">
+    {% if results %}
+        <h2>검색 결과</h2>
+        <ul>
+            {% for popup_store in results %}
+                <li>{{ popup_store.name }} - {{ popup_store.address }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>검색 결과가 없습니다.</p>
+    {% endif %}
+{% endblock %}

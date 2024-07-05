@@ -1,0 +1,174 @@
+{% extends 'frontend/phone.html' %} {% load static %} {% block title %} : 메인{% endblock %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/main.css' %}" />
+{% endblock %} {% block content %}
+<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+<div class="main">
+  <div class="popupSlider">
+    <div class="carousel_main">
+      {% if popups %}
+      <!-- 캐러셀 이미지 삽입 -->
+      <div class="carousel_wrapper">
+        {% for popup in popups|slice:":4" %}
+        <div class="carousel_slide">
+          <a href="{% url 'popplace:popupstore' popup.id %}">
+            <img src="{{ popup.image.url }}" alt="{{ popup.name }}" />
+            <div class="carousel_content">
+              <div class="popName">{{ popup.name }}</div>
+              <div class="popDate">{{ popup.start_date }} - {{ popup.end_date }}</div>
+              <div class="popTime">{{ popup.address }}</div>
+            </div>
+          </a>
+        </div>
+        {% endfor %} {% else %}
+        <div>팝업 스토어가 없습니다.</div>
+        {% endif %}
+      </div>
+
+      <!-- 캐러셀 사이드 버튼 -->
+      <div class="carousel_button_container">
+        <button type="button" class="carousel_prev">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            class="bi bi-chevron-double-left"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+            />
+            <path
+              fill-rule="evenodd"
+              d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+            />
+          </svg>
+        </button>
+        <button type="button" class="carousel_next">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            class="bi bi-chevron-double-right"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"
+            />
+            <path
+              fill-rule="evenodd"
+              d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- 캐러셀 중앙 버튼 -->
+      <div class="carousel_pagination">
+        <div class="carousel_circle"></div>
+        <div class="carousel_circle"></div>
+        <div class="carousel_circle"></div>
+        <div class="carousel_circle"></div>
+      </div>
+    </div>
+  </div>
+
+  <a href="{% url 'popplace:magazine' %}">
+    <div class="toMagazine">
+      <img src="{% static 'img/defaultMImg.png' %}" alt="#" />
+      <div class="carousel_content">
+        <div>소상공인들을 위한 팝업스토어</div>
+        <div>&lt;오래오래 함께가게&gt;</div>
+        <div>in 성수동 인더스탠드 에비뉴</div>
+      </div>
+    </div>
+  </a>
+
+  <div class="mainTitle">지금 가장 인기 있는 팝업</div>
+  <div class="burnPopupList">
+    {% if popups %}
+    <!-- 캐러셀 이미지 삽입 -->
+      {% for popup in popups|slice:"4:6" %}
+      <a href="{% url 'popplace:popupstore' popup.id %}">
+        <div class="burnPopupBox">
+          <img src="{{ popup.image.url }}" alt="{{ popup.name }}"" />
+          <div class="burnPopup_content">
+            <div>{{ popup.name }}</div>
+            <div class="burnPlace">
+              <svg xmlns="http://www.w3.org/2000/svg" width="9" height="12" viewBox="0 0 9 12" fill="none">
+                <path
+                  d="M4.5 6.32115C3.88125 6.32115 3.375 5.81854 3.375 5.20423C3.375 4.58993 3.88125 4.08732 4.5 4.08732C5.11875 4.08732 5.625 4.58993 5.625 5.20423C5.625 5.81854 5.11875 6.32115 4.5 6.32115ZM7.875 5.31593C7.875 3.28872 6.38437 1.85349 4.5 1.85349C2.61563 1.85349 1.125 3.28872 1.125 5.31593C1.125 6.62272 2.22187 8.35394 4.5 10.4202C6.77813 8.35394 7.875 6.62272 7.875 5.31593ZM4.5 0.736572C6.8625 0.736572 9 2.53481 9 5.31593C9 7.17001 7.49813 9.36474 4.5 11.9057C1.50187 9.36474 0 7.17001 0 5.31593C0 2.53481 2.1375 0.736572 4.5 0.736572Z"
+                  fill="#D9D9D9"
+                />
+              </svg>
+              {{ popup.address }}
+            </div>
+          </div>
+        </div>
+      </a>
+      {% endfor %} {% else %}
+      <div>팝업 스토어가 없습니다.</div>
+      {% endif %}
+    </div>
+
+    <div class="mainTitle">팝플 전용 이벤트</div>
+    <div class="eventBox">
+      <div class="eventLG">
+        <img src="{% static 'img/hyundaiLogo.png' %}" alt="로고" style="width: 103px" />
+        X
+        <img src="{% static 'img/popPlace.png' %}" alt="로고" style="width: 88px" />
+      </div>
+      <div class="eventImgNText">
+        <dotlottie-player src="https://lottie.host/4e5046aa-4900-4a2e-b914-6365aa1bf908/B9yIWCkF2F.json" background="transparent" speed="1" style="width: 68.208px; height: 56.349px; transform: rotate(17.083deg); margin-top: -20px;" loop autoplay></dotlottie-player>
+        <div>
+          <div style="color: var(--1, #9151f9); display: inline">팝플레이스</div>
+          가입만 해도 <br />더현대 팝업 럭키드로우 제공?
+        </div>
+        <dotlottie-player src="https://lottie.host/8e7169ba-14a3-4d20-b39c-1508c2123542/xr4kgMvtGh.json" background="transparent" speed="1" style="width: 30px; height: 30px; margin-right: 43px; padding-top: 10px; padding-left: 5px;" loop autoplay></dotlottie-player>
+      </div>
+    </div>
+  </div>
+  {% endblock %} {% block nav %} {% include './nav/nav_main.html' %} {% block js %}
+  <script>
+    swiper = document.querySelector(".carousel_wrapper");
+    const prevButtons = document.querySelectorAll(".carousel_prev");
+    const nextButtons = document.querySelectorAll(".carousel_next");
+    const bullets = document.querySelectorAll(".carousel_circle");
+    let currentSlide = 0;
+    function showSlide(slideIndex) {
+      swiper.style.transform = `translateX(-${slideIndex * 430}px)`;
+      currentSlide = slideIndex;
+      bullets.forEach((bullet, index) => {
+        if (index === currentSlide) {
+          bullet.classList.add("active");
+        } else {
+          bullet.classList.remove("active");
+        }
+      });
+    }
+    prevButtons.forEach((prevButton) => {
+      prevButton.addEventListener("click", () => {
+        if (currentSlide > 0) {
+          showSlide(currentSlide - 1);
+        }
+      });
+    });
+    nextButtons.forEach((nextButton) => {
+      nextButton.addEventListener("click", () => {
+        if (currentSlide < 3) {
+          showSlide(currentSlide + 1);
+        }
+      });
+    });
+    bullets.forEach((bullet, index) => {
+      bullet.addEventListener("click", () => {
+        showSlide(index);
+      });
+    });
+    showSlide(0);
+  </script>
+  {% endblock %} {% endblock %}
+</div>

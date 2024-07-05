@@ -1,0 +1,85 @@
+#map {
+  margin: 0 auto;
+  width: 100vw;
+  height: calc(100dvh - 207px);
+}
+
+@media (hover: hover) {
+  #map {
+    width: 430px;
+  }
+}
+
+#mapwrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.overlayInfo {
+  position: relative;
+  left: 20px;
+  bottom: 54px;
+  width: calc(100vw - 40px - 44px);
+  height: calc(253px - 40px);
+  padding: 20px 22px;
+  background: white;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 4px 4px 4px 0px rgba(145, 81, 249, 0.5);
+}
+
+@media (hover: hover) {
+  .overlayInfo {
+    width: calc(430px - 40px - 44px);
+  }
+}
+
+a {
+  color: black;
+}
+
+.overlayTitle > a {
+  color: #9151f9;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.overlayPUTitle {
+  width: 100%;
+  white-space: wrap;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 25px;
+  margin-top: 5px;
+}
+
+.overlayPUContent {
+  display: flex;
+  gap: 9px;
+  margin-top: 10px;
+}
+
+.infoImage img {
+  width: 167px;
+  height: 135px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.infoContent {
+  width: 100%;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.infoText,
+.infoAddress {
+  width: 100%;
+  white-space: wrap;
+}
+
+.infoText {
+  font-size: 16px;
+  margin-bottom: 15px;
+}

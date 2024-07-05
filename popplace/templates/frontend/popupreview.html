@@ -1,0 +1,49 @@
+{% extends 'frontend/phone.html' %} {% load static %} {% block title %} : 팝업스토어 후기{% endblock %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/popupreview.css' %}" />
+{% endblock %} {% block content %} {% include './header/header.html' %}
+<div class="popupreview">
+  <div class="popupImg">
+    <img src="{{ popup.image.url }}" alt="{{ popup.name }}" />
+  </div>
+  <div class="pvQ">팝업에 다녀오셨나요? 팝업스토어를 평가해주세요!</div>
+  <form action="{% url 'popplace:popupstore' popup.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="pvScore">
+      <div class="pvScoreTitle">점수 :</div>
+      {{ form.rate }}
+      <div class="pvScoreS">점</div>
+      <div class="pvScoreSub">(5점 만점)</div>
+    </div>
+    <div class="pvDate">
+      <div class="pvDateL">팝업 방문 날짜 :</div>
+      <input type="date" name="date" class="" />
+    </div>
+    <div class="pvTitleB">{{ form.title }}</div>
+    <div class="pvPhotoB">{{ form.image }}</div>
+    <div class="pvContentB">{{ form.content }}</div>
+    <div class="pvQuestion">
+      <p>1. 팝업스토어에서 친환경적인 요소를 경험한 것이 있나요? (예: 재활용 가능한 포장, 친환경 제품)</p>
+      <div class="radioBox">
+        <label class="radio-label">
+          <input type="radio" name="sustainability_rating" value="True" {% if form.sustainability_rating.value == True%}checked{% endif %}> 예
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="sustainability_rating" value="False" {% if form.sustainability_rating.value == False%}checked{% endif %}> 아니오
+        </label>
+      </div>
+    </div>
+    <div class="pvQuestion">
+      <p>2. 팝업스토어가 지역 사회에 긍정적인 영향을 미친다고 생각하시나요?</p>
+      <div class="radioBox">
+        <label class="radio-rabel">
+          <input type="radio" name="positive_rating" value ="True" {% if form.positive_rating.value == True%}checked{% endif %}> 예
+        </label>
+        <label class="radio-rabel">
+          <input type="radio" name="positive_rating" value ="False" {% if form.positive_rating.value == False%}checked{% endif %}> 아니오
+        </label>
+      </div>
+    </div>
+    <input type="submit" class="submitBtn" value="등록하기" />
+  </form>
+</div>
+{% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% endblock %}
