@@ -3,8 +3,13 @@
 {% endblock %} {% block content %}
 <div class="popupreserved">팝업 스토어 예약 완료 페이지</div>
 
-
     <h1>예약되었습니다</h1>
+    <h2>{{popup.name}}</h2>
+    <p>방문예정일 {{ reservation.date }} {{reservation.time}}</p>
+    <p>인원수 {{ reservation.participant }} 명</p>
+    <p>장소 {{ popup.address }}</p>
+
+
 
     <button><a href = "{% url 'popplace:popupstore' popup.id %}">목록으로 돌아가기</a></button>
 {% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% endblock %}

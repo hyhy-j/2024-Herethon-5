@@ -19,6 +19,7 @@ urlpatterns = [
   path('signup/done', views.signdone, name='signdone'),
   path('popupstore/', views.popupstore, name='popupstores'),
   path('popupstore/<int:popup_id>/', views.popupstore, name='popupstore'),
+  path('popupstore/<int:popup_id>/add_favorite/', views.add_favorite, name='addfavorite'),
   path('popupstore/<int:popup_id>/reservation', views.popupreserv, name='popupreserv'),
   path('popupstore/<int:popup_id>/reserved',views.popupreserved, name='popupreserved'),
   path('popupstore/<int:popup_id>/review', views.popupreview, name='popupreview'),

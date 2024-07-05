@@ -2,8 +2,9 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
-from .models import PopupStore, Review, Location, Category
+from .models import PopupStore, Review, Location, Category,Reservation,Favorite
 from .forms import ReviewForm, SearchForm, ReservationForm
+from decimal import Decimal
 
 # Create your views here.
 def splash(request):
@@ -109,15 +110,32 @@ def signdone(request):
 #         'popups': popups,
 #     }
 #     return render(request, 'frontend/popupstore.html', context)
-
 def popupstore(request, popup_id):
-    popup = get_object_or_404(PopupStore, id = popup_id)
+    popup = get_object_or_404(PopupStore, id=popup_id)
     reviews = popup.review_set.all()
-    context= {
-        'popup':popup,
-        'reviews':reviews,
+    review_count = reviews.count()
+    if reviews.exists():
+        total_rate = sum(review.rate for review in reviews)
+        average_rating = total_rate / Decimal(reviews.count())
+    else:
+        average_rating = Decimal('0.0')
+
+    context = {
+        'popup': popup,
+        'reviews': reviews,
+        'average_rating': average_rating,
+        'review_count': review_count, 
     }
-    return render(request, 'frontend/popupstore.html',context)
+    return render(request, 'frontend/popupstore.html', context)
+
+def add_favorite(request, popup_id):
+    popup = get_object_or_404(PopupStore, id=popup_id)
+    favorite, created = Favorite.objects.get_or_create(user=request.user, popup_store=popup)
+    if created:
+        message = '팝업스토어가 즐겨찾기에 추가되었습니다.'
+    else:
+        message = '팝업스토어가 이미 즐겨찾기에 있습니다.'
+    return redirect('popplace:popupstore', popup_id=popup_id)
 
 # @login_required
 def popupreserv(request, popup_id):
@@ -129,7 +147,11 @@ def popupreserv(request, popup_id):
             reservation = form.save(commit=False)
             reservation.popup_store = popup
             reservation.save()
-            return redirect('popplace:popupreserved', popup_id=popup_id)  # 예약 성공 페이지로 리다이렉트
+
+            # 세션에 예약 정보 저장
+            request.session['reservation_id'] = reservation.id
+
+            return redirect('popplace:popupreserved', popup_id=popup_id) 
     else:
         form = ReservationForm()
 
@@ -139,9 +161,20 @@ def popupreserv(request, popup_id):
     }
     return render(request, 'frontend/popupreserv.html', context)
 
-def popupreserved(request,popup_id):
+
+def popupreserved(request, popup_id):
     popup = get_object_or_404(PopupStore, id=popup_id)
-    context = {'popup': popup,}
+    reservation_id = request.session.get('reservation_id')
+
+    if reservation_id:
+        reservation = get_object_or_404(Reservation, id=reservation_id)
+    else:
+        reservation = None
+
+    context = {
+        'popup': popup,
+        'reservation': reservation,
+    }
     return render(request, 'frontend/popupreserved.html', context)
 
 def popupreview(request, popup_id):
