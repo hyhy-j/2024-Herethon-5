@@ -25,7 +25,10 @@ class StampForm(forms.ModelForm):
         fields = ['code']
 
 class SearchForm(forms.Form):
-    query = forms.CharField(required=False, label='검색', max_length=100)
+    query = forms.CharField(required=False)
+    category = forms.ChoiceField(required=False)
+    location = forms.ChoiceField(required=False)
+    date = forms.DateField(required=False)
 
     
 class ReservationForm(forms.ModelForm):

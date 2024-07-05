@@ -18,28 +18,45 @@ def main(request):
 
     return render(request, 'frontend/main.html', context)
 
-def search(request):
-    popup = PopupStore.objects.all()
+from django.shortcuts import render
+from .models import PopupStore, Category, Location
+from .forms import SearchForm
+from datetime import datetime
 
-    if request.method == 'GET':
-        form = SearchForm(request.GET)
-        if form.is_valid():
-            query = form.cleaned_data.get('query')
-            results = PopupStore.objects.filter(name__icontains=query)
-        else:
-            results = PopupStore.objects.none()
-    else:
-        form = SearchForm()
-        results = PopupStore.objects.none()
+
+def search(request):
+    categories = Category.objects.all()
+    locations = Location.objects.all()
+    
+    query = request.GET.get('query', '')
+    selected_category = request.GET.get('category', '')
+    selected_location = request.GET.get('location', '')
+    selected_date = request.GET.get('date', '')
+    
+    results = PopupStore.objects.all()
+    
+    if query:
+        results = results.filter(name__icontains=query)
+    
+    if selected_category:
+        results = results.filter(category__id=selected_category)
+    
+    if selected_location:
+        results = results.filter(location__id=selected_location)
+    
+    if selected_date:
+        results = results.filter(start_date__lte=selected_date, end_date__gte=selected_date)
 
     context = {
-        'form': form,
-        'popup_stores': popup,
+        'categories': categories,
+        'locations': locations,
         'results': results,
+        'query': query,
+        'selected_category': selected_category,
+        'selected_location': selected_location,
+        'selected_date': selected_date,
     }
     return render(request, 'frontend/search.html', context)
-
-
 
 def map(request):
     query = request.GET.get('query', '')
