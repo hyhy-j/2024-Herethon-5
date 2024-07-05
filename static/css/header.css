@@ -18,3 +18,7 @@
   align-items: center;
   gap: 15px;
 }
+
+.messages {
+  display: none;
+}
