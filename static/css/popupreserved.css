@@ -45,6 +45,7 @@
   line-height: 25px;
   text-align: right;
   gap: 4px;
+  width: calc(100% - 70px);
 }
 
 .rvDetailTitle {
@@ -56,13 +57,14 @@
   font-weight: 400;
   line-height: 25px;
   gap: 4px;
+  width: 70px;
 }
 
 .plusStoreTitle {
   font-size: 15px;
   font-weight: 500;
   line-height: 25px;
-  margin-top: 100px;
+  margin-top: 80px;
   margin-left: 20px;
 }
 
@@ -84,4 +86,10 @@
 
   position: absolute;
   bottom: 103px;
+}
+
+@media (hover: hover) {
+  .toMyBtn {
+    width: calc(430px - 40px);
+  }
 }
