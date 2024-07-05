@@ -45,6 +45,8 @@ class PopupStore(models.Model):
     longitude = models.FloatField()  # 경도 필드
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null =True)
+    homepage = models.URLField(max_length=200, blank=True, null=True)
+    sns = models.URLField(max_length=200, blank=True, null =True)
     
 
     def __str__(self):
@@ -52,6 +54,11 @@ class PopupStore(models.Model):
 
 
 class Review(models.Model):
+
+    YES_NO_CHOICES=(
+        ('yes','예'),
+        ('no','아니오'),
+    )
     popup_store = models.ForeignKey(PopupStore, on_delete=models.CASCADE)
     # user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
@@ -59,7 +66,8 @@ class Review(models.Model):
     video = models.FileField(upload_to='review_videos/', null=True, blank=True)
     content = models.TextField()
     date = models.DateField(auto_now_add=True)
-    sustainability_rating = models.IntegerField()
+    sustainability_rating = models.CharField(max_length=3, choices=YES_NO_CHOICES, default='yes')
+    positive_rating=models.CharField(max_length=3, choices=YES_NO_CHOICES,default='yes')
     rate = models.DecimalField(max_digits=2, decimal_places=1, validators=[MinValueValidator(Decimal('0.0')), MaxValueValidator(Decimal('5.0'))])
 
     def __str__(self):

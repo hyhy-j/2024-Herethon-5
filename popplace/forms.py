@@ -9,8 +9,10 @@ class SignUpForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['title','content', 'image', 'video', 'sustainability_rating','rate']
+        fields = ['title','content', 'image', 'video', 'sustainability_rating', 'positive_rating','rate']
         widgets = {
+            'sustainability_rating': forms.RadioSelect(choices=Review.YES_NO_CHOICES),
+            'positive_rating': forms.RadioSelect(choices =Review.YES_NO_CHOICES),
             'rate': forms.NumberInput(attrs={'step': 0.5, 'min': 0, 'max': 5}),
         }
 
