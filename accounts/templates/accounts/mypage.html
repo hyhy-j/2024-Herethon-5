@@ -1,59 +1,224 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>My Page</title>
-  </head>
-  <body>
-    <h1>Welcome</h1>
-    <div class="lg">
-      {% if not user.is_authenticated %}
-      <a href="{% url 'accounts:login' %}">
-        <span>login</span>
-      </a>
-      {% else %}
-      <a href="{% url 'accounts:logout' %}">
-        <span>logout</span>
-      </a>
-      {% endif %}
+{% extends 'frontend/phone.html' %} {% load static %} {% block title %} : 마이페이지{% endblock %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/mypage.css' %}" />
+{% endblock %} {% block content %}
+
+<div class="modal" id="myModal">
+  <div class="modal-content">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      {% include 'accounts/add_stamp.html' %}
     </div>
-
-    {% if profile %}
-    <h2>Profile</h2>
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %} {{ profile_form.as_p }}
-      <button type="submit">Update Profile</button>
-    </form>
-    {% else %}
-    <p>No profile found.</p>
-    {% endif %}
-
-    <h2>Reservations</h2>
-    <p>Reservations Count: {{ reservations_count }}</p>
-    <!-- 예약 개수 출력 -->
-    <ul>
-      {% for reservation in reservations %}
+  </div>
+</div>
+<div class="mypage">
+  <div class="topbar">
+    <div class="name"><h1>김팝</h1></div>
+    <div class="topbar-right">
+      <button class="notice" type="button">
+        <img src="{% static 'img/알림.png' %}" alt="알림" />
+      </button>
+      <button class="setting" type="button">
+        <img src="{% static 'img/설정.png' %}" alt="설정" />
+      </button>
+    </div>
+  </div>
+  <div class="profile">
+    <div class="photo"><img src="{% static 'img/프로필 사진.png' %}" alt="프로필사진" /></div>
+    <ul class="middle">
       <li>
-        <strong>Date:</strong> {{ reservation.date }}<br />
-        <strong>Time:</strong> {{ reservation.time }}<br />
-        <strong>Popup Store:</strong> {{ reservation.popup_store.name }}
+        <span>도장</span>
+        {{stamps_count}}
       </li>
-      {% empty %}
-      <li>No reservations found.</li>
-      {% endfor %}
+      <li>
+        <span>예약</span>
+        {{reservations_count}}
+      </li>
     </ul>
+  </div>
+  <div class="detail">
+    <div class="profilechange">
+      <input type="button" value="프로필 편집" />
+    </div>
+    <div class="addstamp">
+      <input type="button" value="도장 추가" id="openModal" />
+    </div>
+  </div>
+  <div class="menu-space">
+    <div class="menu">
+      <ul>
+        <li>
+          <button class="stampbtn" type="button"><img src="{% static 'img/Stamp.png' %}" alt="도장" class="menu-icon stamp-icon" /></button>
+        </li>
+        <li>
+          <button class="reservationbtn" type="button"><img src="{% static 'img/reservation.png' %}" alt="예약" class="menu-icon reservation-icon" /></button>
+        </li>
+        <li>
+          <button class="scrapbtn" type="button"><img src="{% static 'img/Scrap.png' %}" alt="스크랩" class="menu-icon scrap-icon" /></button>
+        </li>
+      </ul>
+    </div>
+    <div class="stampspace">
+      <div class="stampex"><img id="stampex-img" src="{% static 'img/stampex.png' %}" alt="빈 스탬프" /></div>
+      <p>아직 도장이 없어요!<br />팝업을 방문해 도장을 찍어보세요!</p>
+      <button class="stampaddbtn" type="button"><img src="{% static 'img/추가.png' %}" alt="도장추가" /></button>
+    </div>
+    {% for reservation in reservations %}
+    <div class="reservationbox">
+      <div class="reservationtitle">
+        {% if reservation.popup_store.image %}
+        <img src="{{ reservation.popup_store.image.url }}" alt="{{ reservation.popup_store.name }}" />
+        <div class="info-container">
+          <div class="title">{{ reservation.popup_store.name }}</div>
+          <div class="info-item"><span class="label">예약 날짜:</span><span class="value">{{reservation.date}}</span></div>
+          <div class="info-item"><span class="label">예약 시간:</span><span class="value">{{reservation.time}}</span></div>
+        </div>
+        {% endif%}
+      </div>
+    </div>
+    {%endfor%}
+    <div class="scraplist">
+      <div class="scrapimg"><img src="{% static 'img/NewJeans.png' %}" alt="뉴진스" /></div>
+      <div class="scrapimg"><img src="{% static 'img/저장한 팝업 2.png' %}" alt="2" /></div>
+      <div class="scrapimg"><img src="{% static 'img/저장한 팝업 3.png' %}" alt="3" /></div>
+      <div class="scrapimg"><img src="{% static 'img/저장한 팝업 4.png' %}" alt="4" /></div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById("openModal").addEventListener("click", function () {
+    document.getElementById("myModal").style.display = "flex"; // flex로 변경
+  });
 
-    <h2>Stamps</h2>
-    <p>Stamps Count: {{ stamps_count }}</p>
-    <ul>
-      {% for stamp in stamps %}
-      <li>{{ stamp.date_received|date:"Y-m-d H:i:s" }}</li>
-      {% empty %}
-      <li>No stamps found.</li>
-      {% endfor %}
-    </ul>
+  document.getElementById("closeModal").addEventListener("click", function () {
+    document.getElementById("myModal").style.display = "none";
+  });
 
-    <p><a href="{% url 'accounts:add_stamp' %}">Add Stamp</a></p>
-    <p><a href="{% url 'popplace:main' %}">Go to Main Page</a></p>
-  </body>
-</html>
+  document.querySelector(".stampaddbtn").addEventListener("click", function () {
+    document.getElementById("myModal").style.display = "flex";
+  });
+
+  function AddStamp() {
+    // 기존 stampex 이미지 숨기기
+    var stampexImg = document.getElementById("stampex-img");
+    if (stampexImg) {
+      stampexImg.style.display = "none";
+    }
+
+    // 스탬프 이미지 추가 및 랜덤 배치
+    addStampImage("{% static 'img/무진장stamp.png' %}");
+
+    // 모달 창 닫기
+    document.getElementById("myModal").style.display = "none";
+
+    // p 요소 숨기기
+    var pElement = document.querySelector(".stampspace p");
+    if (pElement) {
+      pElement.style.display = "none";
+    }
+  }
+
+  function addStampImage(imageSrc) {
+    var stampspace = document.querySelector(".stampspace");
+    var maxAttempts = 100; // 최대 시도 횟수
+    var spaceWidth = stampspace.clientWidth;
+    var spaceHeight = stampspace.clientHeight;
+    var stampImg = document.createElement("img");
+
+    stampImg.src = imageSrc;
+    stampImg.className = "stamp-img";
+    stampImg.style.position = "absolute";
+
+    for (var i = 0; i < maxAttempts; i++) {
+      var randomX = Math.floor(Math.random() * (spaceWidth - 50)); // 50은 이미지 크기를 고려한 값
+      var randomY = Math.floor(Math.random() * (spaceHeight - 50)); // 50은 이미지 크기를 고려한 값
+
+      stampImg.style.left = randomX + "px";
+      stampImg.style.top = randomY + "px";
+
+      // 다른 스탬프 이미지와 겹치는지 확인
+      var overlapping = false;
+      var existingStamps = stampspace.getElementsByClassName("stamp-img");
+
+      for (var j = 0; j < existingStamps.length; j++) {
+        var existingStamp = existingStamps[j];
+        var existingRect = existingStamp.getBoundingClientRect();
+        var newRect = stampImg.getBoundingClientRect();
+
+        if (
+          !(newRect.right < existingRect.left || newRect.left > existingRect.right || newRect.bottom < existingRect.top || newRect.top > existingRect.bottom)
+        ) {
+          overlapping = true;
+          break;
+        }
+      }
+
+      if (!overlapping) {
+        stampspace.appendChild(stampImg);
+        return;
+      }
+    }
+
+    console.warn("Could not place stamp without overlapping after " + maxAttempts + " attempts.");
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    hideAllSections();
+    showSection(".stampspace");
+    changeMenuIcon("stamp");
+  });
+
+  document.querySelector(".stampbtn").addEventListener("click", function () {
+    hideAllSections();
+    showSection(".stampspace");
+    changeMenuIcon("stamp");
+  });
+
+  document.querySelector(".reservationbtn").addEventListener("click", function () {
+    hideAllSections();
+    showSection(".reservationbox");
+    changeMenuIcon("reservation");
+  });
+
+  document.querySelector(".scrapbtn").addEventListener("click", function () {
+    hideAllSections();
+    showSection(".scraplist");
+    changeMenuIcon("scrap");
+  });
+
+  function hideAllSections() {
+    document.querySelectorAll(".stampspace").forEach(function (section) {
+      section.style.display = "none";
+    });
+    document.querySelectorAll(".reservationbox").forEach(function (section) {
+      section.style.display = "none";
+    });
+    document.querySelectorAll(".scraplist").forEach(function (section) {
+      section.style.display = "none";
+    });
+  }
+
+  function showSection(selector) {
+    document.querySelectorAll(selector).forEach(function (section) {
+      section.style.display = "block";
+    });
+  }
+
+  function changeMenuIcon(active) {
+    var stampIcon = document.querySelector(".stamp-icon");
+    var reservationIcon = document.querySelector(".reservation-icon");
+    var scrapIcon = document.querySelector(".scrap-icon");
+
+    stampIcon.src = "{% static 'img/Stamp.png' %}";
+    reservationIcon.src = "{% static 'img/reservation.png' %}";
+    scrapIcon.src = "{% static 'img/Scrap.png' %}";
+
+    if (active === "stamp") {
+      stampIcon.src = "{% static 'img/Stamp_on.png' %}";
+    } else if (active === "reservation") {
+      reservationIcon.src = "{% static 'img/Reservation_on.png' %}";
+    } else if (active === "scrap") {
+      scrapIcon.src = "{% static 'img/Scrap_on.png' %}";
+    }
+  }
+</script>
+{% endblock %} {% block nav %} {% include './nav/nav_mypage.html' %} {% endblock %}

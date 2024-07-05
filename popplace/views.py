@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -126,11 +127,12 @@ def popupstore(request, popup_id):
 
     context = {
         'popup': popup,
+        'popup_id': popup_id,
         'reviews': reviews,
         'average_rating': average_rating,
         'review_count': review_count, 
     }
-    return render(request, 'frontend/popupstore.html', context)
+    return render(request, 'frontend/popupstore.html', {'popup': popup, 'popup_id': popup_id})
 
 def add_favorite(request, popup_id):
     popup = get_object_or_404(PopupStore, id=popup_id)
@@ -176,11 +178,14 @@ def popupreserved(request, popup_id):
     else:
         reservation = None
 
+    popupl = PopupStore.objects.all()
+
     context = {
         'popup': popup,
         'reservation': reservation,
+        'popuplist': popupl,
     }
-    return render(request, 'frontend/popupreserved.html', context)
+    return render(request, 'frontend/popupreserved.html', {'popup': popup, 'popup_id': popup_id})
 
 def popupreview(request, popup_id):
 
@@ -216,3 +221,17 @@ def category(request):
         'selected_category': category,  # 선택된 카테고리를 템플릿에 전달
     }
     return render(request, 'frontend/category.html', context)
+
+@login_required
+def save_favorite(request, popup_id):
+    if request.method == 'POST':
+        popup = get_object_or_404(PopupStore, id=popup_id)
+        user = request.user
+        favorite, created = Favorite.objects.get_or_create(user=user, popup_store=popup)
+        if created:
+            messages.success(request, '팝업스토어가 즐겨찾기에 추가되었습니다.')
+        else:
+            messages.info(request, '팝업스토어가 이미 즐겨찾기에 있습니다.')
+        return redirect('popplace:popupstore', popup_id=popup_id)
+    messages.error(request, '잘못된 요청입니다.')
+    return redirect('popplace:popupstore', popup_id=popup_id)

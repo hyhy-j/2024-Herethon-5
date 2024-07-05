@@ -145,9 +145,9 @@
   height: 150px;
   overflow-x: scroll;
   margin-top: 5px;
-  margin-left: 23px;
   margin-bottom: 21px;
   gap: 20px;
+  justify-content: center;
 }
 
 .burnPopupBox {

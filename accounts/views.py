@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 
-from popplace.models import Reservation
+from popplace.models import Reservation, Favorite
 from .forms import CustomAuthenticationForm, CustomUserCreationForm
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -56,6 +56,7 @@ def mypage(request):
     reservations_count = reservations.count()  # 예약 개수 계산
     stamps_count = Stamp.objects.filter(user=user).count()
     stamps = user.stamps.all()
+    favorites = Favorite.objects.filter(user=user)
 
     context = {
         'user': user,
@@ -64,6 +65,7 @@ def mypage(request):
         'reservations_count': reservations_count,  # 예약 개수 추가
         'stamps_count': stamps_count,
         'stamps': stamps,
+        'favorites': favorites,  # 좋아요 내역 추가
         # 'popup': popup,
     }
 
