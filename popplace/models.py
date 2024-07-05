@@ -3,10 +3,9 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
+from accounts.models import CustomUser
 
 class User(AbstractUser):
-    # age = models.IntegerField(null=True, blank=True)
-    # gender = models.CharField(max_length=10, null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=10, null=True, blank=True)
     groups = models.ManyToManyField(Group, related_name='popplace_user_set', blank=True)
@@ -74,22 +73,20 @@ class Review(models.Model):
         return self.title
 
 class Stamp(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stamps')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='popplace_stamps')
     code = models.CharField(max_length=20)
     date_received = models.DateTimeField(auto_now_add=True)
 
 class Favorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     popup_store = models.ForeignKey(PopupStore, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.user.username} - {self.popup_store.name}'
 
 class Reservation(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reservations')
-    # popup = models.ForeignKey(Popup, on_delete=models.CASCADE)
-    popup_store = models.ForeignKey(PopupStore, on_delete=models.CASCADE, related_name='reservations')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='popplace_reservations')
+    popup_store = models.ForeignKey(PopupStore, on_delete=models.CASCADE, related_name='popplace_reservations')
     date = models.DateField()
     time = models.TimeField()
     participant = models.PositiveIntegerField()
-

@@ -18,11 +18,6 @@ def main(request):
 
     return render(request, 'frontend/main.html', context)
 
-from django.shortcuts import render
-from .models import PopupStore, Category, Location
-from .forms import SearchForm
-from datetime import datetime
-
 
 def search(request):
     categories = Category.objects.all()
@@ -112,20 +107,6 @@ def magazine(request, magazine_id):
     magazine= get_object_or_404(PopupStore,pk=magazine_id)
     return render(request, 'frontend/magazine.html',{'magazine':magazine})
 
-def magazine(request):
-    return render(request, 'frontend/magazine.html')
-
-def mypage(request):
-    return render(request, 'frontend/mypage.html')
-
-def login(request):
-    return render(request, 'frontend/login.html')
-
-def signup(request):
-    return render(request, 'frontend/signup.html')
-
-def signdone(request):
-    return render(request, 'frontend/signdone.html')
 
 # def popupstore_list(request):
 #     popups = PopupStore.objects.all()
@@ -210,7 +191,6 @@ def popupreview(request, popup_id):
         if form.is_valid():
             review = form.save(commit=False)
             review.popup_store = popup
-            # review.user = request.user
             review.save()
             return redirect('popplace:popupstore', popup_id=popup_id)
     else:
@@ -237,10 +217,3 @@ def category(request):
     return render(request, 'frontend/category.html', context)
 
 
-
-# def category(request, category):
-#     # 작은 카테고리에 따라 해당하는 팝업들을 가져와 JSON 형태로 반환
-#     popups = PopupStore.objects.filter(category__iexact=category)  # 대소문자 구분 없이 필터링
-#     data = list(popups.values('name', 'description'))  # 필요한 필드만 JSON으로 변환
-    
-#     return JsonResponse(data, safe=False)

@@ -18,8 +18,18 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+<<<<<<< HEAD
+=======
+from django.views.generic import RedirectView
+>>>>>>> origin/Back_Login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("popplace.urls", namespace="popplace")),
+<<<<<<< HEAD
+=======
+    path('accounts/', include('accounts.urls')),
+    path('mypage/', RedirectView.as_view(url='/accounts/mypage/', permanent=True)),
+
+>>>>>>> origin/Back_Login
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
