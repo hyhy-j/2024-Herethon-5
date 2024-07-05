@@ -1,48 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>My Page</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Welcome</h1>
+    <div class="lg">
+      {% if not user.is_authenticated %}
+      <a href="{% url 'accounts:login' %}">
+        <span>login</span>
+      </a>
+      {% else %}
+      <a href="{% url 'accounts:logout' %}">
+        <span>logout</span>
+      </a>
+      {% endif %}
+    </div>
 
     {% if profile %}
     <h2>Profile</h2>
     <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ profile_form.as_p }}
-        <button type="submit">Update Profile</button>
+      {% csrf_token %} {{ profile_form.as_p }}
+      <button type="submit">Update Profile</button>
     </form>
     {% else %}
     <p>No profile found.</p>
     {% endif %}
 
     <h2>Reservations</h2>
-     <p>Reservations Count: {{ reservations_count }}</p> <!-- 예약 개수 출력 -->
+    <p>Reservations Count: {{ reservations_count }}</p>
+    <!-- 예약 개수 출력 -->
     <ul>
-        {% for reservation in reservations %}
-        <li>
-            <strong>Date:</strong> {{ reservation.date }}<br>
-            <strong>Time:</strong> {{ reservation.time }}<br>
-            <strong>Popup Store:</strong> {{ reservation.popup_store.name }}
-        </li>
-        {% empty %}
-        <li>No reservations found.</li>
-        {% endfor %}
+      {% for reservation in reservations %}
+      <li>
+        <strong>Date:</strong> {{ reservation.date }}<br />
+        <strong>Time:</strong> {{ reservation.time }}<br />
+        <strong>Popup Store:</strong> {{ reservation.popup_store.name }}
+      </li>
+      {% empty %}
+      <li>No reservations found.</li>
+      {% endfor %}
     </ul>
 
     <h2>Stamps</h2>
     <p>Stamps Count: {{ stamps_count }}</p>
     <ul>
-        {% for stamp in stamps %}
-         <li>{{ stamp.date_received|date:"Y-m-d H:i:s" }}</li>
-        {% empty %}
-        <li>No stamps found.</li>
-        {% endfor %}
+      {% for stamp in stamps %}
+      <li>{{ stamp.date_received|date:"Y-m-d H:i:s" }}</li>
+      {% empty %}
+      <li>No stamps found.</li>
+      {% endfor %}
     </ul>
 
     <p><a href="{% url 'accounts:add_stamp' %}">Add Stamp</a></p>
     <p><a href="{% url 'popplace:main' %}">Go to Main Page</a></p>
-</body>
+  </body>
 </html>
