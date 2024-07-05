@@ -1,0 +1,170 @@
+.popupstore {
+  padding: 0 20px;
+  height: calc(100dvh - 83px - 68.5px);
+  overflow-y: scroll;
+}
+
+.popupImg {
+  width: 100%;
+  margin-top: 5px;
+}
+
+.popupImg img {
+  border-radius: 10px;
+}
+
+.reservBtnUp {
+  width: 100%;
+  height: 33px;
+  display: flex;
+  justify-content: flex-end;
+
+  position: relative;
+  bottom: 51.5px;
+}
+
+.reservBtn {
+  display: flex;
+  width: 97px;
+  height: 33px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background: var(--3, #c8a6ff);
+  color: #fff;
+  font-size: 14px;
+  border: none;
+  font-family: "Noto Sans KR";
+
+  position: relative;
+  right: 17px;
+}
+
+.popupContent {
+  width: calc(100% - 30px);
+  padding: 15px;
+  border-radius: 10px;
+  background: rgba(200, 166, 255, 0.2);
+  margin-top: -16.5px;
+  margin-bottom: 21px;
+}
+
+.popupTitle {
+  color: var(--1, #9151f9);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 25px;
+  margin-bottom: 2.5px;
+}
+
+.popupDate,
+.popupPlace,
+.popupTime,
+.popupText {
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 25px;
+}
+
+.popupLine {
+  width: 100%;
+  height: 1px;
+  background-color: #aaaaaa;
+  margin: 7px 0;
+}
+
+.popupHomePg > a,
+.popupSNS > a {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.popReviewTitle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.rvScore {
+  color: var(--1, #9151f9);
+}
+
+.popReviewList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8.5px;
+  margin-bottom: 21px;
+}
+
+.rvBox {
+  width: calc(150px - 18px);
+  padding: 6px 9px;
+  border-radius: 12px;
+  border: 1px solid var(--1, #9151f9);
+
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+}
+
+.pfImg {
+  width: 22px;
+  height: 22px;
+  background-color: white;
+  border-radius: 22px;
+  border: 1px solid var(--1, #9151f9);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pfImg img {
+  width: 70%;
+}
+
+.rvPnS {
+  display: flex;
+  align-items: center;
+  font-size: 9px;
+  gap: 5px;
+  margin-top: 4px;
+}
+
+.rvText {
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 5px;
+  margin-bottom: 6px;
+}
+
+.rvQ {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: #aaaaaa;
+  margin-bottom: 15px;
+}
+
+.rvBtn {
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  background: var(--2, #a065ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}

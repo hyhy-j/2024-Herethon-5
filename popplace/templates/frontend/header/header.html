@@ -1,0 +1,16 @@
+{% load static %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/header.css' %}" />
+{% endblock %} {% block body %}
+<div class="header">
+  <a href="javascript:history.back()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 22 21" fill="none">
+      <path
+        d="M10.3077 19.5024L2 10.6547L10.3077 1.80711M3.15385 10.6547H20"
+        stroke="black"
+        stroke-width="2.25"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      /></svg
+  ></a>
+</div>
+{% endblock %}

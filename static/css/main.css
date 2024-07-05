@@ -1,0 +1,225 @@
+.main {
+  height: calc(100dvh - 83px);
+  overflow-y: scroll;
+}
+
+/* 캐러셀 전체 구조  */
+.carousel_main {
+  width: 100%; /* 이미지 크기 설정  */
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  user-select: none;
+}
+
+.carousel_wrapper {
+  display: flex;
+  transition: transform 1s;
+}
+
+.carousel_slide {
+  flex: 0 0 100%; /* 이미지 크기 설정  */
+  position: relative;
+}
+
+.carousel_slide img {
+  display: block;
+  width: 100%;
+  height: 287px;
+  object-fit: cover;
+}
+
+/* 캐러셀 사이드 버튼 */
+.carousel_button_container {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.carousel_button {
+  width: 50px;
+  height: 50px;
+  color: #fff;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.carousel_prev {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.carousel_next {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* 캐러셀 중앙 버튼 */
+.carousel_pagination {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+}
+
+.carousel_circle {
+  width: 8px;
+  height: 8px;
+  background-color: #838799;
+  border-radius: 50%;
+  margin: 0 4px;
+  cursor: pointer;
+}
+
+.carousel_circle.active {
+  width: 32px;
+  border-radius: 100px;
+  background-color: #9151f9;
+}
+
+.carousel_content {
+  width: calc(100% - 40px);
+  height: calc(104px - 36px);
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 18px 20px;
+
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.popTime,
+.burnPlace {
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.toMagazine {
+  width: 100%;
+  position: relative;
+  margin-top: 36px;
+}
+
+.toMagazine img {
+  display: block;
+  width: 100%;
+  height: 227px;
+  object-fit: cover;
+}
+
+.mainTitle {
+  margin-top: 32px;
+  margin-left: 23px;
+  color: var(--1, #9151f9);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.burnPopupList {
+  display: flex;
+  width: calc(100% - 23px);
+  height: 150px;
+  overflow-x: scroll;
+  margin-top: 5px;
+  margin-left: 23px;
+  margin-bottom: 21px;
+  gap: 20px;
+}
+
+.burnPopupBox {
+  width: 150px;
+  height: 150px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.burnPopupBox img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.burnPopup_content {
+  width: calc(100% - 10px);
+  height: calc(44px - 10px);
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 0 0 5px 5px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px;
+
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.burnPlace {
+  color: #d9d9d9;
+  font-size: 10px;
+  font-weight: 400;
+  margin-top: 2px;
+
+  display: flex;
+  align-items: center;
+}
+
+.eventBox {
+  width: 386px;
+  height: calc(150px - 46px);
+  border-radius: 5px;
+  border: 1px solid var(--1, #9151f9);
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(200, 166, 255, 0.5), 0px 4px 4px 0px rgba(0, 0, 0, 0.1) inset;
+  margin-top: 5px;
+  margin-left: 23px;
+  margin-bottom: 25px;
+  text-align: center;
+  padding: 23px 0;
+}
+
+.eventLG {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 40px;
+  gap: 21px;
+}
+
+.eventImgNText {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 11px;
+}

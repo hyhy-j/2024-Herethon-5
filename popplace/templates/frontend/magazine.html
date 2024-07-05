@@ -1,0 +1,65 @@
+{% extends 'frontend/phone.html' %} {% load static %} {% block title %} : 매거진{% endblock %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/magazine.css' %}" />
+{% endblock %} {% block content %}
+<div class="magazine">
+  {% include './header/header.html' %}
+  <div class="magazineImg">
+    <img src="{% static 'img/defaultMImg.png' %}" alt="매거진 이미지" />
+  </div>
+  <div class="magazineTitle">
+    <p class="mainTitle">
+      소상공인들을 위한 팝업스토어 <br />
+      &lt;오래오래 함께가게&gt;
+    </p>
+    <p class="subTitle">in 더현대서울</p>
+  </div>
+  <div class="magazinecContent">
+    <p>
+      카카오페이가 함께일하는재단과 손잡고 소상공인 지원을 위한 팝업스토어 ‘오래오래 함께가게’를 열었습니다.
+      <br />
+      <br />
+      '오래오래 함께가게'는 소상공인들에게 오프라인 팝업스토어, 온라인몰, 세무, 마케팅 등을 지원하는 상생
+      프로젝트입니다.
+      <br />
+      <br />
+      ‘오래오래 함께가게’는 더현대서울 지하 1층에서 6월 24일부터 30일까지 운영했습니다. 월~목은 오전 10시 30분부터 오후
+      8시까지, 금~일 및 공휴일은 오전 10시 30분부터 오후 8시 30분까지 운영됐으며, 누구나 예약없이 무료로 팝업스토어에
+      참여할 수 있었습니다.이곳은 지하 1층 100평 규모로, 카카오페이가 임대료, 입점수수료, 판매대행 수수료를 전액 지원해
+      리빙, 패션, 문구, 수공예 액세서리 등 다양한 분야의 590개 이상 제품을 볼 수 있었습니다.또 물류 허브를 컨셉으로 한
+      오브제, 에코백 제작 체험, 포토부스, 럭키드로우 등 다양한 체험이 가능했습니다.
+      <br />
+      <br />
+      이외에도 럭키드로우 이벤트도 있었습니다. 카카오페이로 물건 하나만 결제해도 100% 당첨 대형캡슐 뽑기 이벤트 쿠폰을
+      받을 수 있었다. 식물부터 스티커, 액자 등이 경품으로 나왔으며, 선착순 600명 한정으로 춘식이 리유저블백 역시 받을 수
+      있었습니다.
+    </p>
+  </div>
+  <div class="magazineSNS">
+    <p>SNS 바로가기</p>
+    <div class="SNSArrow">
+      <svg xmlns="http://www.w3.org/2000/svg" width="9" height="13" viewBox="0 0 9 13" fill="none">
+        <path d="M1 12L8 6.5L1 1" stroke="black" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+    <div class="SNSBtn">
+      <a id="instagram-link">
+        <div class="SNSImg">
+          <img src="{% static 'img/instagram.png' %} " alt="인스타그램" />
+        </div>
+        <p>kakaopay.official</p>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block nav %} {% include './nav/nav_main.html' %} {% endblock %} {% block js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var baseUrl = "https://www.instagram.com/";
+    var username = "kakaopay.official";
+    var fullUrl = baseUrl + username;
+
+    var instagramLink = document.getElementById("instagram-link");
+    instagramLink.href = fullUrl;
+  });
+</script>
+{% endblock %}

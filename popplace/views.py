@@ -1,0 +1,182 @@
+from django.shortcuts import redirect, render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.http import JsonResponse
+from .models import PopupStore, Review, Location, Category
+from .forms import ReviewForm, SearchForm, ReservationForm
+
+# Create your views here.
+def splash(request):
+    return render(request, 'frontend/splash.html')
+
+def main(request):
+    popup = PopupStore.objects.all()
+    context = {
+        'popups': popup,
+    }
+
+    return render(request, 'frontend/main.html', context)
+
+def search(request):
+    popup = PopupStore.objects.all()
+
+    if request.method == 'GET':
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data.get('query')
+            results = PopupStore.objects.filter(name__icontains=query)
+        else:
+            results = PopupStore.objects.none()
+    else:
+        form = SearchForm()
+        results = PopupStore.objects.none()
+
+    context = {
+        'form': form,
+        'popup_stores': popup,
+        'results': results,
+    }
+    return render(request, 'frontend/search.html', context)
+
+def map(request):
+    query = request.GET.get('query', '')
+    category_id = request.GET.get('category', '')
+    location_id = request.GET.get('location', '')
+    date = request.GET.get('date', '')
+
+    stores = PopupStore.objects.all()
+    categories = Category.objects.all()
+    locations = Location.objects.all()
+
+    if query:
+        stores = stores.filter(Q(name__icontains=query) | Q(description__icontains=query))
+
+    if category_id:
+        stores = stores.filter(category__id=category_id)
+
+    if location_id:
+        stores = stores.filter(location__id=location_id)
+
+    if date:
+        stores = stores.filter(start_date__lte=date, end_date__gte=date)
+
+    # 카테고리와 위치 이름을 포함하도록 수정
+    store_list = []
+    for store in stores:
+        store_list.append({
+            'id': store.id,
+            'name': store.name,
+            'address': store.address,
+            'latitude': store.latitude,
+            'longitude': store.longitude,
+            'image': store.image,
+            'category_name': store.category.name if store.category else '',
+            'location_name': store.location.name if store.location else '',
+            'start_date': store.start_date,
+            'end_date': store.end_date
+        })
+
+    context = {
+        'stores': store_list,
+        'categories': categories,
+        'locations': locations,
+        'query': query,
+        'selected_category': category_id,
+        'selected_location': location_id,
+        'selected_date': date,
+    }
+    return render(request, 'frontend/map.html', context)
+
+
+def magazine(request, magazine_id):
+    magazine= get_object_or_404(PopupStore,pk=magazine_id)
+    return render(request, 'frontend/magazine.html',{'magazine':magazine})
+
+def magazine(request):
+    return render(request, 'frontend/magazine.html')
+
+def mypage(request):
+    return render(request, 'frontend/mypage.html')
+
+def login(request):
+    return render(request, 'frontend/login.html')
+
+def signup(request):
+    return render(request, 'frontend/signup.html')
+
+def signdone(request):
+    return render(request, 'frontend/signdone.html')
+
+def popupstore(request, popup_id):
+    popup = get_object_or_404(PopupStore, id = popup_id)
+    reviews = popup.review_set.all()
+    context= {
+        'popup':popup,
+        'reviews':reviews,
+    }
+    return render(request, 'frontend/popupstore.html',context)
+
+@login_required
+def popupreserv(request, popup_id):
+    popup = get_object_or_404(PopupStore, id=popup_id)
+
+    if request.method == 'POST':
+        form = ReservationForm(request.POST)
+        if form.is_valid():
+            reservation = form.save(commit=False)
+            reservation.popup_store = popup
+            reservation.user = request.user  # 예약을 사용자와 연결
+            reservation.save()
+            return redirect('popplace:popupreserved', popup_id=popup_id)  # 예약 성공 페이지로 리다이렉트
+    else:
+        form = ReservationForm()
+
+    context = {
+        'popup': popup,
+        'form': form,
+    }
+    return render(request, 'frontend/popupreserv.html', context)
+
+def popupreserved(request,popup_id):
+    popup = get_object_or_404(PopupStore, id=popup_id)
+    context = {'popup': popup,}
+    return render(request, 'frontend/popupreserved.html', context)
+
+def popupreview(request, popup_id):
+
+    popup = get_object_or_404(PopupStore, id=popup_id)
+    reviews = Review.objects.filter(popup_store=popup)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, request.FILES)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.popup_store = popup
+            # review.user = request.user
+            review.save()
+            return redirect('popplace:popupstore', popup_id=popup_id)
+    else:
+        form = ReviewForm()
+
+    context = {
+        'popup': popup,
+        'reviews': reviews,
+        'form': form,
+    }
+    return render(request, 'frontend/popupreview.html', context)
+
+def category(request):
+    category = request.GET.get('category')  # URL에서 카테고리 파라미터 받아오기
+    popup_stores = PopupStore.objects.all()
+
+    if category:
+        popup_stores = popup_stores.filter(category=category)
+
+    context = {
+        'popup_stores': popup_stores,
+        'selected_category': category,  # 선택된 카테고리를 템플릿에 전달
+    }
+    return render(request, 'frontend/category.html', context)
+
+
+
