@@ -1,5 +1,6 @@
 {% extends 'frontend/phone.html' %} {% load static %} {% block title %} : 팝업스토어 후기{% endblock %} {% block css %}
 <link rel="stylesheet" href="{% static 'css/popupreview.css' %}" />
+
 {% endblock %} {% block content %}
 <div class="popupreview">
   <h1>{{ popup.name }} - 리뷰</h1>
@@ -19,11 +20,46 @@
     </li>
     {% endfor %}
   </ul>
-
   <h2>리뷰 작성하기</h2>
   <form action="{% url 'popplace:popupreview' popup.id %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %} {{ form.as_p }}
+    {% csrf_token %} 
+    <div class="form-group">
+      <label for="{{ form.title.id_for_label }}">제목</label>
+      {{ form.title }}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.image.id_for_label }}">이미지</label>
+      {{ form.image }}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.video.id_for_label }}">비디오</label>
+      {{ form.video }}
+    </div>
+
+    <div class="form-group">
+      {{ form.content }}
+      {% comment %} <label for="{{ form.content.id_for_label }}">내용</label> {% endcomment %}
+
+    </div>
+    
+    <div class="form-group">
+      <p>1. 팝업스토어에서 친환경적인 요소를 경험한 것이 있나요? (예: 재활용 가능한 포장, 친환경 제품)</p>
+      {{ form.sustainability_rating }}
+    </div>
+    
+    <div class="form-group">
+      <p>2. 팝업스토어가 지역 사회에 긍정적인 영향을 미친다고 생각하시나요?</p>
+      {{ form.positive_rating }}
+    </div>
+    
+    <div class="form-group">
+      <label for="{{ form.rate.id_for_label }}">평점</label>
+      {{ form.rate }}
+    </div>
     <button type="submit">리뷰 작성</button>
   </form>
 </div>
+
 {% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% endblock %}

@@ -2,8 +2,9 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
-from .models import PopupStore, Review, Location, Category
+from .models import PopupStore, Review, Location, Category,Reservation,Favorite
 from .forms import ReviewForm, SearchForm, ReservationForm
+from decimal import Decimal
 
 # Create your views here.
 def splash(request):
@@ -17,24 +18,38 @@ def main(request):
 
     return render(request, 'frontend/main.html', context)
 
-def search(request):
-    popup = PopupStore.objects.all()
 
-    if request.method == 'GET':
-        form = SearchForm(request.GET)
-        if form.is_valid():
-            query = form.cleaned_data.get('query')
-            results = PopupStore.objects.filter(name__icontains=query)
-        else:
-            results = PopupStore.objects.none()
-    else:
-        form = SearchForm()
-        results = PopupStore.objects.none()
+def search(request):
+    categories = Category.objects.all()
+    locations = Location.objects.all()
+    
+    query = request.GET.get('query', '')
+    selected_category = request.GET.get('category', '')
+    selected_location = request.GET.get('location', '')
+    selected_date = request.GET.get('date', '')
+    
+    results = PopupStore.objects.all()
+    
+    if query:
+        results = results.filter(name__icontains=query)
+    
+    if selected_category:
+        results = results.filter(category__id=selected_category)
+    
+    if selected_location:
+        results = results.filter(location__id=selected_location)
+    
+    if selected_date:
+        results = results.filter(start_date__lte=selected_date, end_date__gte=selected_date)
 
     context = {
-        'form': form,
-        'popup_stores': popup,
+        'categories': categories,
+        'locations': locations,
         'results': results,
+        'query': query,
+        'selected_category': selected_category,
+        'selected_location': selected_location,
+        'selected_date': selected_date,
     }
     return render(request, 'frontend/search.html', context)
 
@@ -92,31 +107,41 @@ def magazine(request, magazine_id):
     magazine= get_object_or_404(PopupStore,pk=magazine_id)
     return render(request, 'frontend/magazine.html',{'magazine':magazine})
 
-def magazine(request):
-    return render(request, 'frontend/magazine.html')
 
-def mypage(request):
-    return render(request, 'frontend/mypage.html')
-
-def login(request):
-    return render(request, 'frontend/login.html')
-
-def signup(request):
-    return render(request, 'frontend/signup.html')
-
-def signdone(request):
-    return render(request, 'frontend/signdone.html')
-
+# def popupstore_list(request):
+#     popups = PopupStore.objects.all()
+#     context = {
+#         'popups': popups,
+#     }
+#     return render(request, 'frontend/popupstore.html', context)
 def popupstore(request, popup_id):
-    popup = get_object_or_404(PopupStore, id = popup_id)
+    popup = get_object_or_404(PopupStore, id=popup_id)
     reviews = popup.review_set.all()
-    context= {
-        'popup':popup,
-        'reviews':reviews,
-    }
-    return render(request, 'frontend/popupstore.html',context)
+    review_count = reviews.count()
+    if reviews.exists():
+        total_rate = sum(review.rate for review in reviews)
+        average_rating = total_rate / Decimal(reviews.count())
+    else:
+        average_rating = Decimal('0.0')
 
-@login_required
+    context = {
+        'popup': popup,
+        'reviews': reviews,
+        'average_rating': average_rating,
+        'review_count': review_count, 
+    }
+    return render(request, 'frontend/popupstore.html', context)
+
+def add_favorite(request, popup_id):
+    popup = get_object_or_404(PopupStore, id=popup_id)
+    favorite, created = Favorite.objects.get_or_create(user=request.user, popup_store=popup)
+    if created:
+        message = '팝업스토어가 즐겨찾기에 추가되었습니다.'
+    else:
+        message = '팝업스토어가 이미 즐겨찾기에 있습니다.'
+    return redirect('popplace:popupstore', popup_id=popup_id)
+
+# @login_required
 def popupreserv(request, popup_id):
     popup = get_object_or_404(PopupStore, id=popup_id)
 
@@ -125,9 +150,12 @@ def popupreserv(request, popup_id):
         if form.is_valid():
             reservation = form.save(commit=False)
             reservation.popup_store = popup
-            reservation.user = request.user  # 예약을 사용자와 연결
             reservation.save()
-            return redirect('popplace:popupreserved', popup_id=popup_id)  # 예약 성공 페이지로 리다이렉트
+
+            # 세션에 예약 정보 저장
+            request.session['reservation_id'] = reservation.id
+
+            return redirect('popplace:popupreserved', popup_id=popup_id) 
     else:
         form = ReservationForm()
 
@@ -137,9 +165,20 @@ def popupreserv(request, popup_id):
     }
     return render(request, 'frontend/popupreserv.html', context)
 
-def popupreserved(request,popup_id):
+
+def popupreserved(request, popup_id):
     popup = get_object_or_404(PopupStore, id=popup_id)
-    context = {'popup': popup,}
+    reservation_id = request.session.get('reservation_id')
+
+    if reservation_id:
+        reservation = get_object_or_404(Reservation, id=reservation_id)
+    else:
+        reservation = None
+
+    context = {
+        'popup': popup,
+        'reservation': reservation,
+    }
     return render(request, 'frontend/popupreserved.html', context)
 
 def popupreview(request, popup_id):
@@ -152,7 +191,6 @@ def popupreview(request, popup_id):
         if form.is_valid():
             review = form.save(commit=False)
             review.popup_store = popup
-            # review.user = request.user
             review.save()
             return redirect('popplace:popupstore', popup_id=popup_id)
     else:
@@ -177,6 +215,5 @@ def category(request):
         'selected_category': category,  # 선택된 카테고리를 템플릿에 전달
     }
     return render(request, 'frontend/category.html', context)
-
 
 

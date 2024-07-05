@@ -16,25 +16,20 @@
     </button>
     <input type="text" name="query" placeholder="팝업 또는 지역을 검색해보세요!" value="{{ query }}" />
   </div>
+  <div class="mapSearchCategory">
+    <select id="category" name="category" class="categoryBtn">
+      <option value="">카테고리</option>
+      {% for category in categories %}
+          <option value="{{ category.id }}" {% if category.id|stringformat:"s" == selected_category %}selected{% endif %}>{{ category.name }}</option>
+      {% endfor %}
+    </select>
+    <select id="location" name="location" class="categoryBtn">
+        <option value="">지역</option>
+        {% for location in locations %}
+            <option value="{{ location.id }}" {% if location.id|stringformat:"s" == selected_location %}selected{% endif %}>{{ location.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="date" id="date" name="date" class="categoryBtn" data-placeholder="날짜" value="{{ selected_date }}" >
+  </div>
 </form>
-<div class="mapSearchCategory">
-  <div class="categoryBtn">
-    <p>카테고리</p>
-    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9" viewBox="0 0 13 9" fill="none">
-      <path d="M1 1L6.5 8L12 1" stroke="black" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>
-  </div>
-  <div class="categoryBtn">
-    <p>지역</p>
-    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9" viewBox="0 0 13 9" fill="none">
-      <path d="M1 1L6.5 8L12 1" stroke="black" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>
-  </div>
-  <div class="categoryBtn">
-    <p>날짜</p>
-    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9" viewBox="0 0 13 9" fill="none">
-      <path d="M1 1L6.5 8L12 1" stroke="black" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>
-  </div>
-</div>
 {% endblock %}
