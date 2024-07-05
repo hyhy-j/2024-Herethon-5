@@ -46,6 +46,7 @@
 │   ├── forms.py
 │   ├── models.py
 │   ├── templates
+│   │   └── accounts
 │   ├── tests.py
 │   ├── urls.py
 │   └── views.py
