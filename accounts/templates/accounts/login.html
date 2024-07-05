@@ -1,17 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="{% url 'accounts:signup' %}">Sign up here</a></p>
-</body>
-</html>
+{% extends 'frontend/phone.html' %} {% load static %} {% block title %}로그인{% endblock %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}" />
+{% endblock %} {% block content %}
+<div class="login">
+  <button class="prepage" type="button" onclick="goBack()">
+    <img src="{% static 'img/predirection.png' %}" alt="이전 페이지" />
+  </button>
+  <h1><span class="highlight">팝플레이스</span> 로그인</h1>
+  <form id="loginForm" method="POST" action="{% url 'accounts:login' %}" onsubmit="return submitForm(event)">
+    {% csrf_token %}
+    <div class="formgroup">
+      <label for="username">이메일<br /> </label>
+      <input type="email" id="email" name="username" placeholder="이메일을 입력해주세요" autocomplete="email" />
+    </div>
+    <div class="formgroup">
+      <label for="pw">비밀번호<br /> </label>
+      <input type="password" id="pw" name="password" placeholder="비밀번호를 입력해주세요" autocomplete="current-password" />
+    </div>
+    <div class="loginsubmit">
+      <input type="submit" value="로그인" disabled />
+    </div>
+  </form>
+  {% if form.errors %}
+  <div id="error-message" style="color: red">
+    {% for field in form %} {% for error in field.errors %}
+    <p>{{ error }}</p>
+    {% endfor %} {% endfor %} {% for error in form.non_field_errors %}
+    <p>{{ error }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="loginfail">
+    <input type="button" onclick="gosign()" value="회원가입" />
+  </div>
+</div>
+{% endblock %} {% block js %}
+<!--<script src="{% static 'js/login.js' %}"></script>-->
+<script>
+  function goBack() {
+    window.history.back();
+  }
+
+  function gosign() {
+    window.location.href = "http://127.0.0.1:8000/accounts/signup";
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("pw");
+    const submitButton = document.querySelector('.loginsubmit input[type="submit"]');
+    const form = document.getElementById("loginForm");
+
+    function checkInputs() {
+      const emailValue = emailInput.value.trim();
+      const passwordValue = passwordInput.value.trim();
+
+      if (emailValue && passwordValue) {
+        submitButton.disabled = false;
+        submitButton.classList.add("active");
+      } else {
+        submitButton.disabled = true;
+        submitButton.classList.remove("active");
+      }
+    }
+
+    emailInput.addEventListener("input", checkInputs);
+    passwordInput.addEventListener("input", checkInputs);
+  });
+</script>
+{% endblock %}
