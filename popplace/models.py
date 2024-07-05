@@ -60,7 +60,7 @@ class Review(models.Model):
     image = models.ImageField(upload_to='review_images/', null=True, blank=True)
     video = models.FileField(upload_to='review_videos/', null=True, blank=True)
     content = models.TextField()
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(null=True)
     sustainability_rating = models.CharField(max_length=3, choices=YES_NO_CHOICES, default='yes')
     positive_rating = models.CharField(max_length=3, choices=YES_NO_CHOICES, default='yes')
     rate = models.DecimalField(max_digits=2, decimal_places=1, validators=[MinValueValidator(Decimal('0.0')), MaxValueValidator(Decimal('5.0'))])

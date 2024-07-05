@@ -9,14 +9,14 @@ class SignUpForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['title','content', 'image', 'sustainability_rating', 'positive_rating','rate']
+        fields = ['title','content', 'image', 'date','sustainability_rating', 'positive_rating','rate']
         widgets = {
             'sustainability_rating': forms.RadioSelect(choices=Review.YES_NO_CHOICES),
             'positive_rating': forms.RadioSelect(choices =Review.YES_NO_CHOICES),
             'title' : forms.TextInput(attrs={'placeholder':'제목을 입력하세요.'}),
             'content': forms.Textarea(attrs={'placeholder': '|후기를 남겨주세요.'}),
             'rate': forms.NumberInput(attrs={'step': 0.5, 'min': 0, 'max': 5}),
-            # 'visitDate': forms.DateInput(attrs={ 'type': 'date'}),
+            'date': forms.DateInput(attrs={ 'type': 'date'}),
         }
 
 class FovoriteForm(forms.ModelForm):

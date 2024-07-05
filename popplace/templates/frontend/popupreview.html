@@ -14,10 +14,13 @@
       <div class="pvScoreS">점</div>
       <div class="pvScoreSub">(5점 만점)</div>
     </div>
-    <!-- <div class="pvDate">
+    <div class="pvDate">
       <div class="pvDateL">팝업 방문 날짜 :</div>
       <input type="date" name="date" class="" />
-    </div> -->
+    </div>
+    {% comment %} <div>날짜* :</div>
+        <input type="date" name="date" class="reservInput" required aria-required="true" />
+      </div> {% endcomment %}
     <div class="pvTitleB">{{ form.title }}</div>
     <div class="pvPhotoB">
       <div id="file-in">
@@ -37,6 +40,23 @@
     <input type="submit" class="submitBtn" value="등록하기" />
   </form>
 </div>
+<<<<<<< HEAD
+<script>
+function checkFormCompletion() {
+        var date = document.querySelector('input[name="date"]').value;
+        var submitButton = document.querySelector(".modal");
+
+        if (date) {
+          submitButton.classList.add("modal-active");
+        } else {
+          submitButton.classList.remove("modal-active");
+        }
+      }
+
+      document.querySelector('input[name="date"]').addEventListener("input", checkFormCompletion);
+    </script>
+{% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% endblock %}
+=======
 {% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% block js %}
 <script>
   function setImageFn(f) {
@@ -60,3 +80,4 @@
   }
 </script>
 {% endblock %} {% endblock %}
+>>>>>>> 23513f3b7d674f26babd7838a62e97e38e4bad69
