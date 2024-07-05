@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MinValueValidator, MaxValueValidator
+from decimal import Decimal
 
 class User(AbstractUser):
     # age = models.IntegerField(null=True, blank=True)
@@ -58,6 +60,7 @@ class Review(models.Model):
     content = models.TextField()
     date = models.DateField(auto_now_add=True)
     sustainability_rating = models.IntegerField()
+    rate = models.DecimalField(max_digits=2, decimal_places=1, validators=[MinValueValidator(Decimal('0.0')), MaxValueValidator(Decimal('5.0'))])
 
     def __str__(self):
         return self.title
@@ -71,8 +74,8 @@ class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     popup_store = models.ForeignKey(PopupStore, on_delete=models.CASCADE)
 
-class Popup:
-    pass
+    def __str__(self):
+        return f'{self.user.username} - {self.popup_store.name}'
 
 class Reservation(models.Model):
     # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reservations')
@@ -81,3 +84,4 @@ class Reservation(models.Model):
     date = models.DateField()
     time = models.TimeField()
     participant = models.PositiveIntegerField()
+

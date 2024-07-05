@@ -46,7 +46,7 @@
     </div>
   </div>
   <div class="popReviewTitle">
-    <div class="rvScore">⭐ 4.5</div>
+    <div class="rvScore">⭐ {{ average_rating|floatformat:1 }}</div>
     <div class="rvCount">후기 {{ reviews.count }}개</div>
   </div>
   <div class="popReviewList">
@@ -58,7 +58,13 @@
       <div class="rvContent">
         <div class="rvPnS">
           <div class="rvP">김**</div>
-          <div class="rvS">⭐⭐⭐⭐⭐</div>
+          <!-- <div class="rvS">⭐⭐⭐⭐⭐</div> -->
+          {% for i in "12345" %}
+          <div class="rvP">
+            {% if forloop.counter <= review.rate %}full{% elif forloop.counter == review.rate|stringformat:"i" %}half{%
+            endif %}">
+          </div>
+          {% endfor %}
         </div>
         <div class="rvText">{{ review.content }}</div>
       </div>
@@ -74,6 +80,8 @@
   <div class="modal_wrap">
     <div class="modal_content">{% include './popupreserv.html' %}</div>
   </div>
+  <!-- {% comment %} <a href="https://twitter.com/intent/tweet?text={{ request.build_absolute_uri }}" target="_blank">트위터로 공유</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">페이스북으로 공유</a> {% endcomment %} -->
 </div>
 {% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% block js %}
 <script>
