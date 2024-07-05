@@ -5,7 +5,7 @@
 
 ## 서비스 소개
 
-![popPlace](https://github.com/2024-HERETHON/2024-Herethon-5/assets/90364700/38bed4eb-a4dc-4772-b765-130b27962b2a)
+![로고](https://github.com/2024-HERETHON/2024-Herethon-5/assets/90364700/94d8b64a-4c28-4911-81d5-39cc8df4a8f7)
 
 💡 **키워드: MZ**
 
@@ -76,41 +76,6 @@
     ├── settings.py
     ├── urls.py
     └── wsgi.py
-
-
- ├─ herethon2024
- │  ├─ __init__.py
- │  ├─ asgi.py
- │  ├─ settings.py
- │  ├─ urls.py
- │  └─ wsgi.py
- ├─ accountApp
- │  ├─ __init__.py
- │  ├─ admin.py
- │  ├─ apps.py
- │  ├─ decorators.py
- │  ├─ forms.py
- │  ├─ models.py
- │  ├─ tests.py
- │  ├─ urls.py
- │  └─ views.py
- ├─ mainApp
- │  ├─ __init__.py
- │  ├─ admin.py
- │  ├─ apps.py
- │  ├─ models.py
- │  ├─ tests.py
- │  ├─ urls.py
- │  └─ views.py
- ├─ static
- │  ├─ css
- │  └─  img
- ├─ .env
- ├─ .gitignore
- ├─ db.sqlite3
- ├─ README.md
- ├─ requirements.txt
- └─ manage.py
 ```
 
 </br>
