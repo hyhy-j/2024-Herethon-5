@@ -31,7 +31,7 @@ body {
 
 /* 모바일 사이트 세팅 */
 .page {
-  background-color: rgb(188, 148, 255, 0.5);
+  /* background-color: rgb(188, 148, 255, 0.5); */
   width: 100vw;
   height: 100vh;
   min-height: 844px;
@@ -49,6 +49,7 @@ body {
   height: 100vh;
   min-height: 844px;
   background-color: white;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
 }
 
 @media (hover: hover) {
