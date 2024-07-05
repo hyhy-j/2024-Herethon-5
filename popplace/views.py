@@ -176,9 +176,12 @@ def popupreserved(request, popup_id):
     else:
         reservation = None
 
+    popupl = PopupStore.objects.all()
+
     context = {
         'popup': popup,
         'reservation': reservation,
+        'popuplist': popupl,
     }
     return render(request, 'frontend/popupreserved.html', context)
 

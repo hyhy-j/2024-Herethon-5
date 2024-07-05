@@ -178,3 +178,47 @@ label {
   font-weight: 500;
   margin-top: 19px;
 }
+
+#file-in {
+  display: flex;
+  align-items: center;
+}
+
+/* file */
+input[type="file"] {
+  width: 90px;
+  height: 90px;
+}
+
+/* ------- From Step 1 ------- */
+
+/* file upload button */
+input[type="file"]::file-selector-button {
+  margin: 0;
+  width: 90px;
+  height: 90px;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  background: rgba(170, 170, 170, 0.2);
+
+  font-family: "Noto Sans KR";
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#file-preview img {
+  height: 90px;
+  width: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+#file-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 14px;
+}

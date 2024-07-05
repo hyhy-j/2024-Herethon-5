@@ -44,8 +44,8 @@ class PopupStore(models.Model):
     longitude = models.FloatField()
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
-    # homepage = models.URLField(max_length=200, blank=True, null=True)
-    # sns = models.URLField(max_length=200, blank=True, null=True)
+    homepage = models.URLField(max_length=200, blank=True, null=True)
+    sns = models.URLField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.name

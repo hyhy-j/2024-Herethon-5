@@ -19,7 +19,12 @@
       <input type="date" name="date" class="" />
     </div> -->
     <div class="pvTitleB">{{ form.title }}</div>
-    <div class="pvPhotoB">{{ form.image }}</div>
+    <div class="pvPhotoB">
+      <div id="file-in">
+        <input type="file" name="image" accept="image/*" id="id_image" onchange="setImageFn(this)" />
+        <div id="file-preview"></div>
+      </div>
+    </div>
     <div class="pvContentB">{{ form.content }}</div>
     <div class="pvQuestion">
       <p>1. 팝업스토어에서 친환경적인 요소를 경험한 것이 있나요? (예: 재활용 가능한 포장, 친환경 제품)</p>
@@ -32,4 +37,26 @@
     <input type="submit" class="submitBtn" value="등록하기" />
   </form>
 </div>
-{% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% endblock %}
+{% endblock %} {% block nav %} {% include './nav/nav_map.html' %} {% block js %}
+<script>
+  function setImageFn(f) {
+    var file = f.files;
+
+    if (!/\.(gif|jpg|jpeg|png)$/i.test(file[0].name)) {
+      alert("gif, jpg, png 파일만 선택해 주세요.\n\n현재 파일 : " + file[0].name);
+
+      f.value = "";
+
+      document.getElementById("file-preview").innerHTML = "";
+    } else {
+      var reader = new FileReader();
+
+      reader.onload = function (rst) {
+        document.getElementById("file-preview").innerHTML = '<img src="' + rst.target.result + '">';
+      };
+
+      reader.readAsDataURL(file[0]);
+    }
+  }
+</script>
+{% endblock %} {% endblock %}
