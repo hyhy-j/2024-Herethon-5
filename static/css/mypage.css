@@ -7,7 +7,7 @@
 
 @media (hover: hover) {
   .mypage {
-    width: 430px;
+      width: 430px;
   }
 }
 
@@ -46,7 +46,7 @@
 }
 
 .photo {
-  margin-right: 20px;
+  margin-right: 20px; 
   margin-left: 20px;
 }
 
@@ -86,7 +86,7 @@
 
 .detail input[type="button"] {
   text-align: center;
-  background-color: #c8a6ff;
+  background-color: #C8A6FF;
   border: none;
   color: White;
   border-radius: 30px;
@@ -101,33 +101,33 @@
   cursor: pointer;
 }
 
-.detail input[type="button"]:hover {
+.detail input[type="button"]:hover{
   background-color: #9151f9;
 }
 
 /* 모달 창 스타일링 */
 
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  left: 0; 
+  top: 0; 
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.4);
+  height: 100%; 
+  overflow: hidden; 
+  background-color: rgba(0, 0, 0, 0.4); 
   align-items: center;
   justify-content: center;
 }
 
 .modal-content {
-  position: relative;
+  position: relative; 
   background-color: #fff;
   padding: 20px;
   border: 1px solid #888;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
   width: 80%;
   max-width: 350px;
   text-align: center;
@@ -147,7 +147,7 @@
   width: 100%;
 }
 
-.modal form input[type="text"] {
+.modal form input[type="number"] {
   width: calc(100% - 40px);
   padding: 10px;
   margin-bottom: 20px;
@@ -159,7 +159,7 @@
 .modal form .addnclose {
   width: 100%;
   padding: 10px;
-  background-color: #c8a6ff;
+  background-color: #C8A6FF; 
   border: none;
   color: white;
   border-radius: 5px;
@@ -168,14 +168,14 @@
 }
 
 .modal form .addnclose:hover {
-  background-color: #a085d9;
+  background-color: #A085D9;
 }
 
 .close {
-  color: #aaa;
-  position: absolute;
+  color: #aaa; 
+  position: absolute; 
   right: 20px;
-  top: 20px;
+  top: 20px; 
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
@@ -183,12 +183,11 @@
 
 .close:hover,
 .close:focus {
-  color: black;
+  color: black; 
   text-decoration: none;
 }
 
-.profilechange,
-.addstamp {
+.profilechange, .addstamp {
   margin: 10px 0;
 }
 
@@ -205,7 +204,7 @@
 
 .menu {
   width: 70px;
-  background-color: White;
+  background-color: White; 
   padding-top: 20px;
   padding-right: 0;
   margin-left: 10px;
@@ -241,7 +240,7 @@
   filter: brightness(1);
 }
 
-.stampspace {
+.stampspace{
   flex-grow: 1;
   background-color: rgba(200, 166, 255, 0.4);
   border-radius: 10%;
@@ -254,12 +253,12 @@
 .stampex {
   margin-bottom: 0;
 }
-.stampspace p {
+.stampspace p{
   text-align: center;
   color: #9151f9;
   margin-bottom: 50px;
 }
-.stampaddbtn {
+.stampaddbtn{
   position: absolute;
   background: none;
   border: none;
@@ -267,7 +266,7 @@
   right: 20px;
   cursor: pointer;
 }
-.stamp-img {
+.stamp-img{
   width: 100px;
   height: auto;
   position: absolute;
@@ -279,7 +278,7 @@
   flex-direction: column;
   background-color: rgba(200, 166, 255, 0.4);
   border-radius: 10%;
-  width: 100%;
+  width:100%;
   height: 100%;
   margin-left: 0px;
   margin-right: 20px;
@@ -362,3 +361,5 @@
   border-radius: 10%;
   display: block;
 }
+
+
