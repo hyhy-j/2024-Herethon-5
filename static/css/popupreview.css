@@ -157,12 +157,11 @@
   gap: 15px;
 }
 
-.radioBox input {
+label input {
   accent-color: #9151f9;
 }
 
-.radio-rabel,
-.radio-label {
+label {
   font-size: 14px;
   font-weight: 400;
 }

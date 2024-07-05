@@ -12,30 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-<<<<<<< HEAD
-import environ
-
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
-
-
-# Set the project base directory
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Take environment variables from .env file
-environ.Env.read_env(os.path.join(BASE_DIR, '.env')
-                     )
-
-# False if not in os.environ because of casting above
-DEBUG = env('DEBUG')
-
-# Raises Django's ImproperlyConfigured
-# exception if SECRET_KEY not in os.environ
-SECRET_KEY = env('SECRET_KEY')
-=======
->>>>>>> origin/Back_Login
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -62,10 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'popplace',
-<<<<<<< HEAD
-=======
     'accounts',
->>>>>>> origin/Back_Login
 ]
 
 MIDDLEWARE = [
@@ -83,11 +56,7 @@ ROOT_URLCONF = 'yeougithon5.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-<<<<<<< HEAD
-        'DIRS': [],
-=======
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
->>>>>>> origin/Back_Login
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,12 +114,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-<<<<<<< HEAD
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = 'static/'
-=======
 # settings.py
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # 기본 백엔드 유
@@ -160,36 +123,20 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
->>>>>>> origin/Back_Login
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-<<<<<<< HEAD
-    os.path.join(BASE_DIR, 'media'),
-=======
->>>>>>> origin/Back_Login
 ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-<<<<<<< HEAD
-import environ
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-=======
->>>>>>> origin/Back_Login
 
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-<<<<<<< HEAD
-env= environ.Env()
-environ.Env.read_env()
-SECRET_KEY=env("SECRET_KEY")
-=======
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -197,4 +144,3 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 LOGIN_URL = '/accounts/login/'  # 예시: 로그인 페이지의 URL
->>>>>>> origin/Back_Login

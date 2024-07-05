@@ -3,8 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
 from .models import PopupStore, Review, Location, Category,Reservation,Favorite
-from .forms import ReviewForm, SearchForm, ReservationForm
+from .forms import ReviewForm, ReservationForm
 from decimal import Decimal
+
 
 # Create your views here.
 def splash(request):
@@ -103,9 +104,8 @@ def map(request):
     return render(request, 'frontend/map.html', context)
 
 
-def magazine(request, magazine_id):
-    magazine= get_object_or_404(PopupStore,pk=magazine_id)
-    return render(request, 'frontend/magazine.html',{'magazine':magazine})
+def magazine(request):
+    return render(request, 'frontend/magazine.html')
 
 
 # def popupstore_list(request):
@@ -141,7 +141,7 @@ def add_favorite(request, popup_id):
         message = '팝업스토어가 이미 즐겨찾기에 있습니다.'
     return redirect('popplace:popupstore', popup_id=popup_id)
 
-# @login_required
+@login_required
 def popupreserv(request, popup_id):
     popup = get_object_or_404(PopupStore, id=popup_id)
 
@@ -149,6 +149,7 @@ def popupreserv(request, popup_id):
         form = ReservationForm(request.POST)
         if form.is_valid():
             reservation = form.save(commit=False)
+            reservation.user = request.user
             reservation.popup_store = popup
             reservation.save()
 
@@ -215,5 +216,3 @@ def category(request):
         'selected_category': category,  # 선택된 카테고리를 템플릿에 전달
     }
     return render(request, 'frontend/category.html', context)
-
-
