@@ -13,7 +13,8 @@ class ReviewForm(forms.ModelForm):
         widgets = {
             'sustainability_rating': forms.RadioSelect(choices=Review.YES_NO_CHOICES),
             'positive_rating': forms.RadioSelect(choices =Review.YES_NO_CHOICES),
-            'content': forms.Textarea(attrs={'placeholder': '후기를 남겨주세요.'}),
+            'title' : forms.CharField(attrs={'placeholder':'제목을 입력하세요.'}),
+            'content': forms.Textarea(attrs={'placeholder': '|후기를 남겨주세요.'}),
             'rate': forms.NumberInput(attrs={'step': 0.5, 'min': 0, 'max': 5}),
         }
 
