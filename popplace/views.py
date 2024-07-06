@@ -182,7 +182,10 @@ def popupreserved(request, popup_id):
         'popup': popup,
         'reservation': reservation,
     }
-    return render(request, 'frontend/popupreserved.html', {'popup': popup, 'popup_id': popup_id})
+
+    popupl = PopupStore.objects.all()
+
+    return render(request, 'frontend/popupreserved.html', {'popup': popup, 'popup_id': popup_id, 'popuplist': popupl, 'reservation': reservation})
 
 def popupreview(request, popup_id):
 

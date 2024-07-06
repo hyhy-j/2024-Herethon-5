@@ -1,49 +1,38 @@
-{% extends 'frontend/phone.html' %}
-{% load static %}
-{% block title %} : 검색{% endblock %}
-{% block css %}
+{% extends 'frontend/phone.html' %} {% load static %} {% block css %}
 <link rel="stylesheet" href="{% static 'css/search.css' %}" />
-{% endblock %}
-{% block content %}
+{% endblock %} {% block content %}
 <div class="search">
   {% include 'frontend/searchBar/searchBar.html' %}
   <div class="popupList">
-    {% if results %}
-      {% for popup in results %}
-        <a href="{% url 'popplace:popupstore' popup.id %}">
-          <div class="popupBox">
-            <div class="popupImg">
-              <img src="{{ popup.image.url }}" alt="{{ popup.name }}" />
-            </div>
-            <div class="popupCategory">{{ popup.category.name }}</div>
-            <div class="popupName">{{ popup.name }}</div>
-            <div class="popupDate">{{ popup.start_date }} - {{ popup.end_date }}</div>
-            <div class="popupPlace">{{ popup.address }}</div>
-          </div>
-        </a>
-      {% empty %}
-      <div>팝업 스토어가 없습니다.</div>
-      {% endfor %}
-    {% else %}
-      {% for popup in popups %}
-        <a href="{% url 'popplace:popupstore' popup.id %}">
-          <div class="popupBox">
-            <div class="popupImg">
-              <img src="{{ popup.image.url }}" alt="{{ popup.name }}" />
-            </div>
-            <div class="popupCategory">{{ popup.category.name }}</div>
-            <div class="popupName">{{ popup.name }}</div>
-            <div class="popupDate">{{ popup.start_date }} - {{ popup.end_date }}</div>
-            <div class="popupPlace">{{ popup.address }}</div>
-          </div>
-        </a>
-      {% empty %}
-      <div>팝업 스토어가 없습니다.</div>
-      {% endfor %}
-    {% endif %}
+    {% if results %} {% for popup in results %}
+    <a href="{% url 'popplace:popupstore' popup.id %}">
+      <div class="popupBox">
+        <div class="popupImg">
+          <img src="{{ popup.image.url }}" alt="{{ popup.name }}" />
+        </div>
+        <div class="popupCategory">{{ popup.category.name }}</div>
+        <div class="popupName">{{ popup.name }}</div>
+        <div class="popupDate">{{ popup.start_date }} - {{ popup.end_date }}</div>
+        <div class="popupPlace">{{ popup.address }}</div>
+      </div>
+    </a>
+    {% empty %}
+    <div>팝업 스토어가 없습니다.</div>
+    {% endfor %} {% else %} {% for popup in popups %}
+    <a href="{% url 'popplace:popupstore' popup.id %}">
+      <div class="popupBox">
+        <div class="popupImg">
+          <img src="{{ popup.image.url }}" alt="{{ popup.name }}" />
+        </div>
+        <div class="popupCategory">{{ popup.category.name }}</div>
+        <div class="popupName">{{ popup.name }}</div>
+        <div class="popupDate">{{ popup.start_date }} - {{ popup.end_date }}</div>
+        <div class="popupPlace">{{ popup.address }}</div>
+      </div>
+    </a>
+    {% empty %}
+    <div>팝업 스토어가 없습니다.</div>
+    {% endfor %} {% endif %}
   </div>
 </div>
-{% endblock %}
-{% block nav %}
-{% include 'frontend/nav/nav_search.html' %}
-{% endblock %}
+{% endblock %} {% block nav %} {% include 'frontend/nav/nav_search.html' %} {% endblock %}

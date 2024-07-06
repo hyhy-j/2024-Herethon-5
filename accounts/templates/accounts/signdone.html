@@ -1,19 +1,18 @@
-{% extends 'frontend/phone.html' %} {% load static %} {% block title %} : 회원가입{% endblock %} {% block css %}
+{% extends 'frontend/phone.html' %} {% load static %} {% block css %}
 <link rel="stylesheet" href="{% static 'css/signdone.css' %}" />
 {% endblock %} {% block content %}
 <div class="signdone">
-    <img class="logo" src="{% static 'img/popPlace.png' %}" alt="이전 페이지" />
-    <h1><span class="highlight">팝플레이스</span><br>로그인이 완료되었습니다</h1>
-    <h2><span class="highlight">김팝</span>님, 환영합니다!</h2>
-    <!--추후 백엔드에서 데이터 가져와 회원의 이름을 변수로 저장하여 출력할 예정-->
-    <div class="gomain">
-        <input type="button" onclick="gomain()" value="마이페이지로 바로가기" />
-    </div>
+  <img class="logo" src="{% static 'img/popPlace.png' %}" alt="이전 페이지" />
+  <h1><span class="highlight">팝플레이스</span><br />로그인이 완료되었습니다</h1>
+  <h2><span class="highlight">김팝</span>님, 환영합니다!</h2>
+  <!--추후 백엔드에서 데이터 가져와 회원의 이름을 변수로 저장하여 출력할 예정-->
+  <div class="gomain">
+    <input type="button" onclick="gomain()" value="마이페이지로 바로가기" />
+  </div>
 </div>
 <script>
-    function gomain() {
-        window.location.href = "http://127.0.0.1:8000/accounts/mypage";
-      }
+  function gomain() {
+    window.location.href = "http://127.0.0.1:8000/accounts/mypage";
+  }
 </script>
 {% endblock %}
-

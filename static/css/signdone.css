@@ -1,0 +1,48 @@
+.signdone {
+  width: 100vw;
+  height: calc(100dvh - 83px);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (hover: hover) {
+  .signdone {
+    width: 430px;
+  }
+}
+
+.logo {
+  margin-top: 100px;
+  width: 250px;
+  height: auto;
+}
+
+h1 {
+  text-align: center;
+  font-size: 30px;
+}
+.highlight {
+  color: #9151f9;
+}
+
+h2 {
+  text-align: center;
+  font-size: 20px;
+}
+
+.gomain input[type="button"] {
+  width: 370px;
+  padding: 15px 20px;
+  font-size: 18px;
+  color: white;
+  background-color: #9151f9;
+  border: none;
+  border-radius: 10px;
+  cursor: not-allowed;
+  box-sizing: border-box;
+  text-align: center;
+  margin-top: 350px;
+  cursor: pointer;
+}

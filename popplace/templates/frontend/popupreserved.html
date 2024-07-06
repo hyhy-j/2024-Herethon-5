@@ -1,4 +1,4 @@
-{% extends 'frontend/phone.html' %} {% load static %} {% block title %} : 팝업스토어 예약{% endblock %} {% block css %}
+{% extends 'frontend/phone.html' %} {% load static %} {% block css %}
 <link rel="stylesheet" href="{% static 'css/popupreserved.css' %}" />
 <link rel="stylesheet" href="{% static 'css/main.css' %}" />
 {% endblock %} {% block content %} {% include './header/popupHeader.html' %}
@@ -34,36 +34,29 @@
 
   <div class="plusStoreTitle">추천 팝업 스토어</div>
   <div class="burnPopupList">
-    <div class="burnPopupBox">
-      <img src="{% static 'img/defaultMImg.png' %}" alt="#" />
-      <div class="burnPopup_content">
-        <div>뉴진스 how sweet 팝업</div>
-        <div class="burnPlace">
-          <svg xmlns="http://www.w3.org/2000/svg" width="9" height="12" viewBox="0 0 9 12" fill="none">
-            <path
-              d="M4.5 6.32115C3.88125 6.32115 3.375 5.81854 3.375 5.20423C3.375 4.58993 3.88125 4.08732 4.5 4.08732C5.11875 4.08732 5.625 4.58993 5.625 5.20423C5.625 5.81854 5.11875 6.32115 4.5 6.32115ZM7.875 5.31593C7.875 3.28872 6.38437 1.85349 4.5 1.85349C2.61563 1.85349 1.125 3.28872 1.125 5.31593C1.125 6.62272 2.22187 8.35394 4.5 10.4202C6.77813 8.35394 7.875 6.62272 7.875 5.31593ZM4.5 0.736572C6.8625 0.736572 9 2.53481 9 5.31593C9 7.17001 7.49813 9.36474 4.5 11.9057C1.50187 9.36474 0 7.17001 0 5.31593C0 2.53481 2.1375 0.736572 4.5 0.736572Z"
-              fill="#D9D9D9"
-            />
-          </svg>
-          서울특별시 중구
+    {% if popuplist %}
+    <!-- 캐러셀 이미지 삽입 -->
+    {% for popupl in popuplist|slice:"7:9" %}
+    <a href="{% url 'popplace:popupstore' popup.id %}">
+      <div class="burnPopupBox">
+        <img src="{{ popupl.image.url }}" alt="{{ popupl.name }}"" />
+        <div class="burnPopup_content">
+          <div>{{ popupl.name }}</div>
+          <div class="burnPlace">
+            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="12" viewBox="0 0 9 12" fill="none">
+              <path
+                d="M4.5 6.32115C3.88125 6.32115 3.375 5.81854 3.375 5.20423C3.375 4.58993 3.88125 4.08732 4.5 4.08732C5.11875 4.08732 5.625 4.58993 5.625 5.20423C5.625 5.81854 5.11875 6.32115 4.5 6.32115ZM7.875 5.31593C7.875 3.28872 6.38437 1.85349 4.5 1.85349C2.61563 1.85349 1.125 3.28872 1.125 5.31593C1.125 6.62272 2.22187 8.35394 4.5 10.4202C6.77813 8.35394 7.875 6.62272 7.875 5.31593ZM4.5 0.736572C6.8625 0.736572 9 2.53481 9 5.31593C9 7.17001 7.49813 9.36474 4.5 11.9057C1.50187 9.36474 0 7.17001 0 5.31593C0 2.53481 2.1375 0.736572 4.5 0.736572Z"
+                fill="#D9D9D9"
+              />
+            </svg>
+            {{ popupl.address }}
+          </div>
         </div>
       </div>
-    </div>
-    <div class="burnPopupBox">
-      <img src="{% static 'img/defaultMImg.png' %}" alt="#" />
-      <div class="burnPopup_content">
-        <div>뉴진스 how sweet 팝업</div>
-        <div class="burnPlace">
-          <svg xmlns="http://www.w3.org/2000/svg" width="9" height="12" viewBox="0 0 9 12" fill="none">
-            <path
-              d="M4.5 6.32115C3.88125 6.32115 3.375 5.81854 3.375 5.20423C3.375 4.58993 3.88125 4.08732 4.5 4.08732C5.11875 4.08732 5.625 4.58993 5.625 5.20423C5.625 5.81854 5.11875 6.32115 4.5 6.32115ZM7.875 5.31593C7.875 3.28872 6.38437 1.85349 4.5 1.85349C2.61563 1.85349 1.125 3.28872 1.125 5.31593C1.125 6.62272 2.22187 8.35394 4.5 10.4202C6.77813 8.35394 7.875 6.62272 7.875 5.31593ZM4.5 0.736572C6.8625 0.736572 9 2.53481 9 5.31593C9 7.17001 7.49813 9.36474 4.5 11.9057C1.50187 9.36474 0 7.17001 0 5.31593C0 2.53481 2.1375 0.736572 4.5 0.736572Z"
-              fill="#D9D9D9"
-            />
-          </svg>
-          서울특별시 중구
-        </div>
-      </div>
-    </div>
+    </a>
+    {% endfor %} {% else %}
+    <div>팝업 스토어가 없습니다.</div>
+    {% endif %}
   </div>
 
   <a href="{% url 'accounts:mypage' %}">

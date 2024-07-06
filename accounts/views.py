@@ -93,5 +93,5 @@ def add_stamp(request):
         else:
             messages.error(request, '인증 번호가 올바르지 않습니다.')
 
-    return render(request, 'accounts/add_stamp.html')
+    return render(request, 'accounts/add_stamp.html', {'stamps_count': stamps_count})
 

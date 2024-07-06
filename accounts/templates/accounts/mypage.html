@@ -1,13 +1,11 @@
-{% extends 'frontend/phone.html' %} {% load static %} {% block title %} : 마이페이지{% endblock %} {% block css %}
+{% extends 'frontend/phone.html' %} {% load static %} {% block css %}
 <link rel="stylesheet" href="{% static 'css/mypage.css' %}" />
 {% endblock %} {% block content %}
 
 <div class="modal" id="myModal">
   <div class="modal-content">
-    <div class="modal-content">
-      <span class="close" id="closeModal">&times;</span>
-      {% include 'accounts/add_stamp.html' %}
-    </div>
+    <span class="close" id="closeModal">&times;</span>
+    {% include 'accounts/add_stamp.html' %}
   </div>
 </div>
 <div class="mypage">
@@ -37,7 +35,7 @@
   </div>
   <div class="detail">
     <div class="profilechange">
-      <input type="button" value="프로필 편집" />
+      <a href="{% url 'accounts:logout' %}"> <input type="button" value="로그아웃" /></a>
     </div>
     <div class="addstamp">
       <input type="button" value="도장 추가" id="openModal" />
@@ -58,30 +56,40 @@
       </ul>
     </div>
     <div class="stampspace">
+      {% for stamp in stamps %}
+      <li>{{ stamp.date_received|date:"Y-m-d H:i:s" }}</li>
+      <button class="stampaddbtn" type="button"><img src="{% static 'img/추가.png' %}" alt="도장추가" /></button>
+      {% empty %}
       <div class="stampex"><img id="stampex-img" src="{% static 'img/stampex.png' %}" alt="빈 스탬프" /></div>
       <p>아직 도장이 없어요!<br />팝업을 방문해 도장을 찍어보세요!</p>
       <button class="stampaddbtn" type="button"><img src="{% static 'img/추가.png' %}" alt="도장추가" /></button>
+      {% endfor %}
     </div>
-    {% for reservation in reservations %}
-    <div class="reservationbox">
-      <div class="reservationtitle">
-        {% if reservation.popup_store.image %}
-        <img src="{{ reservation.popup_store.image.url }}" alt="{{ reservation.popup_store.name }}" />
-        <div class="info-container">
-          <div class="title">{{ reservation.popup_store.name }}</div>
-          <div class="info-item"><span class="label">예약 날짜:</span><span class="value">{{reservation.date}}</span></div>
-          <div class="info-item"><span class="label">예약 시간:</span><span class="value">{{reservation.time}}</span></div>
+
+    <div class="reservationboxList">
+      {% for reservation in reservations %}
+      <div class="reservationbox">
+        <div class="reservationtitle">
+          {% if reservation.popup_store.image %}
+          <img src="{{ reservation.popup_store.image.url }}" alt="{{ reservation.popup_store.name }}" />
+          <div class="info-container">
+            <div class="title">{{ reservation.popup_store.name }}</div>
+            <div class="info-item"><span class="label">예약 날짜 |</span><span class="value">{{reservation.date}}</span></div>
+            <div class="info-item"><span class="label">예약 시간 |</span><span class="value">{{reservation.time}}</span></div>
+          </div>
+          {% endif%}
         </div>
-        {% endif%}
       </div>
+      {%endfor%}
     </div>
-    {%endfor%}
+
     <div>
       <div class="scraplist" style="display: flex">
-        <div class="scrapimg"><img src="{% static 'img/NewJeans.png' %}" alt="뉴진스" /></div>
-        <div class="scrapimg"><img src="{% static 'img/저장한 팝업 2.png' %}" alt="2" /></div>
-        <div class="scrapimg"><img src="{% static 'img/저장한 팝업 3.png' %}" alt="3" /></div>
-        <div class="scrapimg"><img src="{% static 'img/저장한 팝업 4.png' %}" alt="4" /></div>
+        {% for favorite in favorites %} {% if favorite.popup_store.image %}
+        <div class="scrapimg"><img src="{{ favorite.popup_store.image.url }}" alt="{{ favorite.popup_store.name }}" /></div>
+        {% endif %} {% empty %}
+        <li>No favorites found.</li>
+        {% endfor %}
       </div>
     </div>
   </div>
@@ -183,7 +191,7 @@
 
   document.querySelector(".scrapbtn").addEventListener("click", function () {
     hideAllSections();
-    showSection(".scraplist");
+    showflexSection(".scraplist");
     changeMenuIcon("scrap");
   });
 
@@ -202,6 +210,12 @@
   function showSection(selector) {
     document.querySelectorAll(selector).forEach(function (section) {
       section.style.display = "block";
+    });
+  }
+
+  function showflexSection(selector) {
+    document.querySelectorAll(selector).forEach(function (section) {
+      section.style.display = "flex";
     });
   }
 

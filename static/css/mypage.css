@@ -90,15 +90,13 @@
   border: none;
   color: White;
   border-radius: 10px;
-  font-size: 16px;
-  font-weight: bold;
   width: 171px;
-  max-width: calc(50%-40px);
+  height: 37px;
   box-sizing: border-box;
-  padding: 13px 40px;
-  /* margin-left: 20px;
-  margin-right: 20px; */
   cursor: pointer;
+  font-family: "Noto Sans KR";
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .detail input[type="button"]:hover {
@@ -129,10 +127,10 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 80%;
+  height: 232px;
   max-width: 350px;
   text-align: center;
   align-items: center;
-  margin-left: 25px;
 }
 
 .modal h1 {
@@ -192,6 +190,35 @@
   margin: 10px 0;
 }
 
+.addSTitle {
+  margin-top: 43px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.modal-content form input {
+  width: calc(100% - 96px);
+  height: 69px;
+  margin: 12px 0;
+  border-radius: 10px;
+  border: 1px solid #000;
+  text-align: center;
+  font-family: "Noto Sans KR";
+  outline: none;
+}
+
+.modal-content form button {
+  width: calc(100% - 96px);
+  height: 50px;
+  border-radius: 30px;
+  background: var(--1, #9151f9);
+  font-family: "Noto Sans KR";
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+}
+
 /* 메뉴 스타일링 */
 
 .menu-space {
@@ -244,7 +271,7 @@
 .stampspace {
   flex-grow: 1;
   background-color: rgba(200, 166, 255, 0.4);
-  border-radius: 10%;
+  border-radius: 10px;
   width: 100%;
   margin-left: 0px;
   margin-right: 10px;
@@ -273,14 +300,21 @@
   position: absolute;
 }
 
+.reservationboxList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .reservationbox {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   background-color: rgba(200, 166, 255, 0.4);
-  border-radius: 10%;
-  width: 100%;
-  height: 100%;
+  border-radius: 10px;
+  width: auto;
+  height: 140px;
   margin-left: 0px;
   margin-right: 20px;
   padding: 5px;
@@ -289,17 +323,15 @@
 
 .reservationtitle {
   display: flex;
-  align-items: center;
   margin-bottom: 0;
 }
 
-.reservationimg {
-  width: 110px;
-  height: 110px;
+.reservationtitle img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
   border-radius: 10%;
-  margin-top: 5px;
-  margin-left: 5px;
-  margin-right: 5px; /* 이미지와 텍스트 사이의 간격 설정 */
+  margin-right: 7px; /* 이미지와 텍스트 사이의 간격 설정 */
 }
 
 .info-container {
@@ -308,21 +340,24 @@
 }
 
 .title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  margin-bottom: 12px;
+  margin-top: 16px;
 }
 
 .info-item {
-  display: block;
-  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
 }
 
 .info-item .label {
-  font-weight: bold;
-  color: #555;
-  margin-right: 5px;
+  margin-right: 11px;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
 }
 
 .info-item .separator {
@@ -331,7 +366,8 @@
 }
 
 .info-item .value {
-  color: #777;
+  font-size: 11px;
+  font-weight: 400;
 }
 
 .scraplist {
@@ -349,16 +385,17 @@
 .scrapimg {
   background-color: rgba(200, 166, 255, 0.4);
   padding: 5px;
-  width: calc(50% - 10px);
+  width: 140px;
   height: auto;
   border-radius: 10%;
-  box-sizing: border-box;
-  flex: 1 1 calc(50% - 10px);
+  /* flex: 1 1 calc(50% - 10px); */
   margin-bottom: 10px;
 }
 
 .scraplist img {
-  max-width: 100%;
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
   border-radius: 10%;
   display: block;
 }
