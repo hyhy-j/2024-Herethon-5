@@ -95,3 +95,9 @@ $ python manage.py runserver
 ```
 
   <hr/>
+
+## 실행 영상
+![실행영상 - 1](https://github.com/user-attachments/assets/4a0ed292-12c3-4f79-a731-bd084f57ca6f)
+![실행영상 - 2](https://github.com/user-attachments/assets/7ba1f40a-73d9-43ff-9f00-8228e7e6cdec)
+![실행영상 - 3](https://github.com/user-attachments/assets/d2fd13b9-dc52-4420-b007-ab2d829f6c37)
+
